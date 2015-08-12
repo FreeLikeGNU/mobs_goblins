@@ -11,5 +11,8 @@
     "authors": [
         "FreeLikeGNU"
     ],
-    "license": "UNKNOWN"
+    "license": [
+        "CC-BY-SA-3.0",
+        "WTFPL"
+    ]
 }
