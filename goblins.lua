@@ -7,7 +7,7 @@ mobs_goblins.goblin_drops = {
 }
 
 mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
-	type = "animal",
+	type = "npc",
 	passive = false,
 	damage = 1,
 	attack_type = "dogfight",
@@ -20,18 +20,19 @@ mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
 		textures = {
-			{"mobs_goblin1.png"},
-			{"mobs_goblin2.png"},
+			{"goblins_goblin_coal1.png"},
+			{"goblins_goblin_coal2.png"},
 		},
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_pig",
+		attack = "mobs_pig_angry",
 	},
 	walk_velocity = 2,
 	run_velocity = 3,
 	jump = true,
 	drops = {
-		{name = "default:wood",
+		{name = "default:coal_lump",
 		chance = 1, min = 1, max = 3},
 		{name = "default:apple",
 		chance = 2, min = 1, max = 2},
@@ -121,23 +122,23 @@ mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
 		textures = {
-			{"mobs_goblin3.png"},
-			{"mobs_goblin4.png"},
-			{"mobs_goblin5.png"},
+			{"goblins_goblin_iron1.png"},
+			{"goblins_goblin_iron2.png"},
 		},
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_pig",
+		attack = "mobs_pig_angry",
 	},
 	walk_velocity = 2,
 	run_velocity = 3,
 	jump = true,
 	drops = {
-		{name = "default:wood",
+		{name = "default:iron_lump",
 		chance = 1, min = 1, max = 3},
 		{name = "default:apple",
 		chance = 2, min = 1, max = 2},
-		{name = "default:axe_stone",
+		{name = "default:pick_steel",
 		chance = 5, min = 1, max = 1},
 	},
 	water_damage = 0,
@@ -223,23 +224,23 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
 		textures = {
-			{"mobs_goblin6.png"},
-			{"mobs_goblin7.png"},
-			{"mobs_goblin8.png"},
+			{"goblins_goblin_gold1.png"},
+			{"goblins_goblin_gold2.png"},		
 		},
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_pig",
+		attack = "mobs_pig_angry",
 	},
 	walk_velocity = 2,
 	run_velocity = 3,
 	jump = true,
 	drops = {
-		{name = "default:wood",
+		{name = "default:gold_lump",
 		chance = 1, min = 1, max = 3},
 		{name = "default:apple",
 		chance = 2, min = 1, max = 2},
-		{name = "default:axe_stone",
+		{name = "default:gold_ingot",
 		chance = 5, min = 1, max = 1},
 	},
 	water_damage = 0,
@@ -325,19 +326,19 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
 		textures = {
-			{"mobs_goblin9.png"},
-			{"mobs_goblin10.png"},
-			{"mobs_goblin11.png"},
+			{"goblins_goblin_diamond1.png"},
+			{"goblins_goblin_diamond2.png"},
 		},
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_pig",
+		attack = "mobs_pig_angry",
 	},
 	walk_velocity = 2,
 	run_velocity = 3,
 	jump = true,
 	drops = {
-		{name = "default:pick_steel",
+		{name = "default:pick_diamond",
 		chance = 1, min = 1, max = 1},
 		{name = "default:apple",
 		chance = 2, min = 1, max = 10},
@@ -413,10 +414,111 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 	end,
 		
 })
--- spawn like stone monster, but for ores
-mobs_goblins:register_spawn("mobs_goblins:goblin_coal", {"default:stone_with_coal" }, 20, 0, 10000, 2, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron"}, 20, 0, 10000, 2, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_gold", {"default:stone_with_gold" }, 20, 0, 10000, 2, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_diamond", {"default:stone_with_diamond" }, 20, 0, 10000, 2, 1)
+mobs_goblins:register_mob("mobs_goblins:goblin_king", {
+	type = "monster",
+	passive = false,
+	damage = 4,
+	attack_type = "dogfight",
+	attacks_monsters = true,
+	hp_min = 20,
+	hp_max = 40,
+	armor = 100,
+	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.0,0.35},
+	visual = "mesh",
+	mesh = "goblins_goblin.b3d",
+	drawtype = "front",
+		textures = {
+			{"goblins_goblin_king.png"},
+		},
+	makes_footstep_sound = true,
+	sounds = {
+		random = "mobs_pig",
+		attack = "mobs_pig_angry",
+	},
+	walk_velocity = 2,
+	run_velocity = 3,
+	jump = true,
+	drops = {
+		{name = "default:pick_mese",
+		chance = 1, min = 1, max = 1},
+		{name = "default:apple",
+		chance = 2, min = 1, max = 10},
+		{name = "default:mese_crystal",
+		chance = 5, min = 1, max = 1},
+	},
+	water_damage = 0,
+	lava_damage = 2,
+	light_damage = 0,
+	follow = "default:diamond",
+	view_range = 15,
+	owner = "",
+	order = "follow",
+	animation = {
+		speed_normal = 30,
+		speed_run = 30,
+		stand_start = 0,
+		stand_end = 79,
+		walk_start = 168,
+		walk_end = 187,
+		run_start = 168,
+		run_end = 187,
+		punch_start = 200,
+		punch_end = 219,
+	},
+	on_rightclick = function(self, clicker)
+		local item = clicker:get_wielded_item()
+		local name = clicker:get_player_name()
 
-mobs_goblins:register_egg("mobs_goblins:goblin", "goblin", "default:stone_with_coal", 1)
+		-- feed to heal goblin
+		if item:get_name() == "default:apple"
+		or item:get_name() == "farming:bread" then
+
+			local hp = self.object:get_hp()
+			-- return if full health
+			if hp >= self.hp_max then
+				minetest.chat_send_player(name, "goblin at full health.")
+				return
+			end
+			hp = hp + 4
+			if hp > self.hp_max then hp = self.hp_max end
+			self.object:set_hp(hp)
+			-- take item
+			if not minetest.setting_getbool("creative_mode") then
+				item:take_item()
+				clicker:set_wielded_item(item)
+			end
+
+		-- right clicking with gold lump drops random item from mobs_goblins.goblin_drops
+		elseif item:get_name() == "default:gold_lump" then
+			if not minetest.setting_getbool("creative_mode") then
+				item:take_item()
+				clicker:set_wielded_item(item)
+			end
+			local pos = self.object:getpos()
+			pos.y = pos.y + 0.5
+			minetest.add_item(pos, {name = mobs_goblins.goblin_drops[math.random(1, #mobs_goblins.goblin_drops)]})
+
+		else
+			-- if owner switch between follow and stand
+			if self.owner and self.owner == clicker:get_player_name() then
+				if self.order == "follow" then
+					self.order = "stand"
+				else
+					self.order = "follow"
+				end
+--			else
+--				self.owner = clicker:get_player_name()
+			end
+		end
+
+		mobs_goblins:capture_mob(self, clicker, 0, 5, 80, false, nil)
+	end,
+		
+})
+-- spawn like stone monster, but for ores
+mobs_goblins:register_spawn("mobs_goblins:goblin_coal", {"default:stone_with_coal" }, 20, 0, 100, 2, 1)
+mobs_goblins:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron"}, 20, 0, 100, 2, 1)
+mobs_goblins:register_spawn("mobs_goblins:goblin_gold", {"default:stone_with_gold" }, 20, 0, 100, 2, 1)
+mobs_goblins:register_spawn("mobs_goblins:goblin_diamond", {"default:stone_with_diamond" }, 20, 0, 100, 2, 1)
+mobs_goblins:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese" }, 20, 0, 100, 2, 1)
+mobs_goblins:register_egg("mobs_goblins:goblin_coal", "goblin egg", "default:stone_with_coal", 1)
