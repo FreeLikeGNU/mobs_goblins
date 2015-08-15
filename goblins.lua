@@ -7,7 +7,8 @@ mobs_goblins.goblin_drops = {
 }
 
 mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
-	type = "npc",
+	description = "Coal Goblin",
+	type = "animal",
 	passive = false,
 	damage = 1,
 	attack_type = "dogfight",
@@ -36,13 +37,17 @@ mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
 		chance = 1, min = 1, max = 3},
 		{name = "default:apple",
 		chance = 2, min = 1, max = 2},
-		{name = "default:axe_stone",
-		chance = 5, min = 1, max = 1},
+		{name = "default:torch",
+		chance = 3, min = 1, max = 10},
 	},
 	water_damage = 0,
 	lava_damage = 2,
 	light_damage = 0,
-	follow = "default:diamond",
+	follow = {"default:diamond"},
+		replace_rate = 50,
+		replace_what = {"default:torch",},
+		replace_with = "air",
+		replace_offset = 2,
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -109,6 +114,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
 		
 })
 mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
+	description = "Iron Goblin",
 	type = "animal",
 	passive = false,
 	damage = 2,
@@ -145,6 +151,10 @@ mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
 	lava_damage = 2,
 	light_damage = 0,
 	follow = "default:diamond",
+		replace_rate = 50,
+		replace_what = {"default:torch",},
+		replace_with = "air",
+		replace_offset = 2,
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -211,6 +221,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
 		
 })
 mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
+	description = "Gold Goblin",
 	type = "monster",
 	passive = false,
 	damage = 3,
@@ -247,6 +258,10 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 	lava_damage = 2,
 	light_damage = 0,
 	follow = "default:diamond",
+		replace_rate = 50,
+		replace_what = {"default:torch",},
+		replace_with = "air",
+		replace_offset = 2,
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -313,6 +328,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 		
 })
 mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
+	description = "Diamond Goblin",
 	type = "animal",
 	passive = false,
 	damage = 3,
@@ -349,6 +365,10 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 	lava_damage = 2,
 	light_damage = 0,
 	follow = "default:diamond",
+		replace_rate = 50,
+		replace_what = {"default:torch",},
+		replace_with = "air",
+		replace_offset = 2,
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -415,6 +435,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 		
 })
 mobs_goblins:register_mob("mobs_goblins:goblin_king", {
+	description = "Goblin King",
 	type = "monster",
 	passive = false,
 	damage = 4,
@@ -450,6 +471,10 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 	lava_damage = 2,
 	light_damage = 0,
 	follow = "default:diamond",
+		replace_rate = 50,
+		replace_what = {"default:torch",},
+		replace_with = "air",
+		replace_offset = -1,
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -515,10 +540,12 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 	end,
 		
 })
--- spawn like stone monster, but for ores
-mobs_goblins:register_spawn("mobs_goblins:goblin_coal", {"default:stone_with_coal" }, 20, 0, 100, 2, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron"}, 20, 0, 100, 2, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_gold", {"default:stone_with_gold" }, 20, 0, 100, 2, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_diamond", {"default:stone_with_diamond" }, 20, 0, 100, 2, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese" }, 20, 0, 100, 2, 1)
+-- spawn underground near ore and dungeons
+--function mobs_goblins:register_spawn(name, nodes, max_light, min_light, chance, active_object_count, max_height)
+
+mobs_goblins:register_spawn("mobs_goblins:goblin_coal", {"default:torch", "default:coal", "default:mossycobble"}, 1000, 0, 30, 1, 1)
+mobs_goblins:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron","default:mossycobble",},  10, 0, 30, 1, 1)
+mobs_goblins:register_spawn("mobs_goblins:goblin_gold", {"default:stone_with_gold","default:mossycobble", },  10, 0, 30, 1, 1)
+mobs_goblins:register_spawn("mobs_goblins:goblin_diamond", {"default:stone_with_diamond","default:mossycobble", },  30, 0, 100, 1, 1)
+mobs_goblins:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese","default:mossycobble", },  10, 0, 300, 1, 1)
 mobs_goblins:register_egg("mobs_goblins:goblin_coal", "goblin egg", "default:stone_with_coal", 1)

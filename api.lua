@@ -1,4 +1,4 @@
--- Mobs Api (4th August 2015) -- Modified by FreeLikeGNU for Goblins
+-- Mobs Api (13th August 2015)
 mobs_goblins = {}
 mobs_goblins.mod = "redo"
 
@@ -13,6 +13,7 @@ function mobs_goblins:register_mob(name, def)
 	minetest.register_entity(name, {
 		stepheight = def.stepheight or 0.6,
 		name = name,
+		description = def.description or name,
 		fly = def.fly,
 		fly_in = def.fly_in or "air",
 		owner = def.owner or "",
@@ -49,7 +50,7 @@ function mobs_goblins:register_mob(name, def)
 		shoot_interval = def.shoot_interval,
 		sounds = def.sounds or {},
 		animation = def.animation,
-		follow = def.follow or "",
+		follow = def.follow, -- or "",
 		jump = def.jump or true,
 		walk_chance = def.walk_chance or 50,
 		attacks_monsters = def.attacks_monsters or false,
@@ -198,7 +199,7 @@ function mobs_goblins:register_mob(name, def)
 				self.lifetimer = self.lifetimer - dtime
 				if self.lifetimer <= 0
 				and self.state ~= "attack" then
-					minetest.log("action","lifetimer expired, removed "..self.name)
+					minetest.log("action","lifetimer expired, removed "..self.description)
 					effect(self.object:getpos(), 15, "tnt_smoke.png")
 					self.object:remove()
 					return
@@ -209,14 +210,23 @@ function mobs_goblins:register_mob(name, def)
 			if self.replace_rate
 			and self.child == false
 			and math.random(1,self.replace_rate) == 1 then
-				local pos = self.object:getpos()
-				pos.y = pos.y + self.replace_offset
-				-- print ("replace node = ".. minetest.get_node(pos).name, pos.y)
+				local pos1 = self.object:getpos()
+				local pos2 = self.object:getpos()
+				pos1.y = pos1.y - self.replace_offset
+				pos1.x = pos1.x - self.replace_offset
+				pos1.z = pos1.z - self.replace_offset
+				pos2.y = pos2.y + self.replace_offset
+				pos2.x = pos2.x + self.replace_offset
+				pos2.z = pos2.z + self.replace_offset
+				--print (self.name)
+				--print ("is searching between" .. pos1.x, pos1.y, pos1.z)
+				--print ("and                 " .. pos2.x, pos2.y, pos2.z)
+				local nodelist = minetest.find_nodes_in_area(pos1, pos2, self.replace_what)
 				if self.replace_what
-				and self.object:getvelocity().y == 0
-				and #minetest.find_nodes_in_area(pos, pos, self.replace_what) > 0 then
-				--and self.state == "stand" then
-					minetest.set_node(pos, {name = self.replace_with})
+				and #nodelist > 0 then
+					print (#nodelist.." nodes found by "..self.description.." !!!")
+					for key,value in pairs(nodelist) do print(minetest.get_node(value).name.. " stolen!!") end
+					for key,value in pairs(nodelist) do minetest.set_node(value, {name = self.replace_with}) end	
 				end
 			end
 
@@ -508,13 +518,26 @@ function mobs_goblins:register_mob(name, def)
 				for i,obj in ipairs(ents) do
 					ent = obj:get_luaentity()
 
-				-- quick fix for racist sheep
-				if ent
-				and string.find(ent.name, "mobs_goblins:sheep_") then
-					ent.name = "mobs_goblins:sheep"
+				-- check for same animal with different colour
+				local canmate = false
+				if ent then
+					if ent.name == self.name then
+						canmate = true
+					else
+						local entname = string.split(ent.name,":")
+						local selfname = string.split(self.name,":")
+						if entname[1] == selfname[1] then
+							entname = string.split(entname[2],"_")
+							selfname = string.split(selfname[2],"_")
+							if entname[1] == selfname[1] then
+								canmate = true
+							end
+						end
+					end
 				end
+
 					if ent
-					and ent.name == self.name
+					and canmate == true
 					and ent.horny == true
 					and ent.hornytimer <= 40 then
 						num = num + 1
@@ -590,7 +613,8 @@ function mobs_goblins:register_mob(name, def)
 				-- stop following player if not holding specific item
 				if self.following
 				and self.following.is_player
-				and self.following:get_wielded_item():get_name() ~= self.follow then
+				--and self.following:get_wielded_item():get_name() ~= self.follow then
+				and follow_holding(self, self.following) == false then
 					self.following = nil
 				end
 			end
@@ -778,7 +802,7 @@ end
 				local vec = {x = p.x - s.x, y = p.y - s.y, z = p.z - s.z}
 				yaw = math.atan(vec.z / vec.x) + math.pi / 2 - self.rotate
 				if p.x > s.x then
-					yaw = yaw+math.pi
+					yaw = yaw + math.pi
 				end
 				self.object:setyaw(yaw)
 				if self.attack.dist > 3 then
@@ -1099,7 +1123,7 @@ end
 
 -- remove mob when out of range unless tamed
 if mobs_goblins.remove == true and self.remove_ok and not self.tamed then
-	print ("REMOVED", self.remove_ok, self.name)
+	print ("REMOVED", self.remove_ok, self.description)
 	self.object:remove()
 end
 self.remove_ok = true
@@ -1247,14 +1271,14 @@ function mobs_goblins:spawn_specific(name, nodes, neighbors, min_light, max_ligh
 			end
 
 			if minetest.setting_getbool("display_mob_spawn") then
-				minetest.chat_send_all("[mobs] Add "..name.." at "..minetest.pos_to_string(pos))
+				minetest.chat_send_all("[mobs_goblins] Spawned "..name.." at "..minetest.pos_to_string(pos))
 			end
 
 			-- spawn mob half block higher
 			pos.y = pos.y - 0.5
 			minetest.add_entity(pos, name)
-			--print ("Spawned "..name.." at "..minetest.pos_to_string(pos).." on "..node.name.." near "..neighbors[1])
-			minetest.log("action", "Spawned " .. name .. " at " .. minetest.pos_to_string(pos) .. ".")
+			print ("Spawned "..description.." at "..minetest.pos_to_string(pos).." on "..node.name.." near "..neighbors[1])
+
 		end
 	})
 end
@@ -1285,7 +1309,7 @@ end
 
 -- explosion
 function mobs_goblins:explosion(pos, radius, fire, smoke, sound)
-	-- node hit, bursts into flame (cannot blast through obsidian or protection redo mod items)
+	-- node hit, bursts into flame (cannot blast through unbreakable/specific nodes)
 	if not fire then fire = 0 end
 	if not smoke then smoke = 0 end
 	local pos = vector.round(pos)
@@ -1564,5 +1588,104 @@ function mobs_goblins:capture_mob(self, clicker, chance_hand, chance_net, chance
 				minetest.chat_send_player(name, "Missed!")
 			end
 		end
+	end
+end
+
+-- follow what I'm holding ?
+function follow_holding(self, clicker)
+	local item = clicker:get_wielded_item()
+	local follow_item = false
+	local t = type(self.follow)
+
+	-- single item
+	if t == "string"
+	and item:get_name() == self.follow then
+		follow_item = true
+
+	-- multiple items
+	elseif t == "table" then
+		for no = 1, #self.follow do
+			if self.follow[no] == item:get_name() then
+				follow_item = true
+			end
+		end
+	end
+
+	-- true if can eat/tame with item
+	if follow_item == true then
+		return true
+	end
+
+	return false
+end
+
+-- feeding, taming and breeding (thanks blert2112)
+function mobs_goblins:feed_tame(self, clicker, feed_count, breed)
+
+	if not self.follow then return false end
+
+	local item = clicker:get_wielded_item()
+	local follow_item = false
+	local t = type(self.follow)
+
+	-- single item
+	if t == "string"
+	and item:get_name() == self.follow then
+		follow_item = true
+
+	-- multiple items
+	elseif t == "table" then
+		for no = 1, #self.follow do
+			if self.follow[no] == item:get_name() then
+				follow_item = true
+			end
+		end
+	end
+
+	-- can eat/tame with item in hand
+	if follow_holding(self, clicker) then
+--print ("mmm, tasty")
+		-- take item
+		if not minetest.setting_getbool("creative_mode") then
+			item:take_item()
+			clicker:set_wielded_item(item)
+		end
+
+		-- heal health
+		local hp = self.object:get_hp()
+		hp = math.min(hp + 4, self.hp_max)
+		self.object:set_hp(hp)
+		self.health = hp
+
+		-- make children grow quicker
+		if self.child == true then
+			self.hornytimer = self.hornytimer + 20
+			return true
+		end
+
+		-- feed and tame
+		self.food = (self.food or 0) + 1
+		if self.food == feed_count then
+			self.food = 0
+			if breed and self.hornytimer == 0 then
+				self.horny = true
+			end
+			self.gotten = false
+			self.tamed = true
+			if not self.owner or self.owner == "" then
+				self.owner = clicker:get_player_name()
+			end
+
+			-- make sound when fed so many times
+			if self.sounds.random then
+				minetest.sound_play(self.sounds.random, {
+					object = self.object,
+					max_hear_distance = self.sounds.distance
+				})
+			end
+		end
+		return true
+	else
+		return false
 	end
 end
