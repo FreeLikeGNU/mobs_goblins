@@ -225,8 +225,13 @@ function mobs_goblins:register_mob(name, def)
 				if self.replace_what
 				and #nodelist > 0 then
 					print (#nodelist.." nodes found by "..self.description.." !!!")
-					for key,value in pairs(nodelist) do print(minetest.get_node(value).name.. " stolen!!") end
-					for key,value in pairs(nodelist) do minetest.set_node(value, {name = self.replace_with}) end	
+					--for k,v in pairs(nodelist) do print(minetest.get_node(v).name.. " found!!") end
+					for key,value in pairs(nodelist) do 
+						if math.random(1,self.replace_rate) == 1 then
+							print(self.replace_with.." placed")
+							minetest.set_node(value, {name = self.replace_with})
+						end
+					 end	
 				end
 			end
 
