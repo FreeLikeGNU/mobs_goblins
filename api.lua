@@ -300,7 +300,7 @@ function mobs_goblins:register_mob(name, def)
 			end
 
 			if self.sounds.random
-			and math.random(1, 100) <= 1 then
+			and math.random(1, 100) <= 10 then
 				minetest.sound_play(self.sounds.random, {
 					object = self.object,
 					max_hear_distance = self.sounds.distance
