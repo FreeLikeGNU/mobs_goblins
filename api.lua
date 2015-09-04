@@ -11,6 +11,7 @@ mobs_goblins.remove = minetest.setting_getbool("remove_far_mobs") or false
 
 function mobs_goblins:register_mob(name, def)
 	minetest.register_entity(name, {
+		debugging_goblins = def.debugging_goblins or true,
 		stepheight = def.stepheight or 0.6,
 		name = name,
 		description = def.description or name,
@@ -63,10 +64,19 @@ function mobs_goblins:register_mob(name, def)
 		blood_texture = def.blood_texture or "goblins_blood.png",
 		shoot_offset = def.shoot_offset or 0,
 		floats = def.floats or 1, -- floats in water by default
-		replace_rate = def.replace_rate,
+
+		search_rate = def.search_rate, --how often to we search for nodes?
+		-- how often do we lookfor nodes above or below? (relative to nodes around us, will be same if undefined)
+		search_rate_above = def.search_rate_above or 1, 
+		search_rate_below = def.search_rate_below or 1,
+		-- how far away can we look for nodes?
+		search_offset = def.search_offset or 0,
+		search_offset_above = def.search_offset_above or 0,
+		search_offset_below = def.search_offset_below or 0,
+		replace_rate = def.replace_rate, -- how often do we replace nodes we find?
+		-- what nodes will be replaced?
 		replace_what = def.replace_what,
 		replace_with = def.replace_with,
-		replace_offset = def.replace_offset or 0,
 		timer = 0,
 		env_damage_timer = 0, -- only if state = "attack"
 		attack = {player=nil, dist=nil},
@@ -209,26 +219,39 @@ function mobs_goblins:register_mob(name, def)
 			-- check for mob drop/replace (used for chicken egg and sheep eating grass/wheat)
 			if self.replace_rate
 			and self.child == false
-			and math.random(1,self.replace_rate) == 1 then
+			and math.random(1,self.search_rate) == 1 then
+				--look for nodes
 				local pos1 = self.object:getpos()
 				local pos2 = self.object:getpos()
-				pos1.y = pos1.y - self.replace_offset
-				pos1.x = pos1.x - self.replace_offset
-				pos1.z = pos1.z - self.replace_offset
-				pos2.y = pos2.y + self.replace_offset
-				pos2.x = pos2.x + self.replace_offset
-				pos2.z = pos2.z + self.replace_offset
-				--print (self.name)
-				--print ("is searching between" .. pos1.x, pos1.y, pos1.z)
-				--print ("and                 " .. pos2.x, pos2.y, pos2.z)
+				-- if we are looking, will we look below and by how much?
+				if math.random(1,self.search_rate_below) == 1 then
+					pos1.y = pos1.y - self.search_offset_below	
+				end				
+				-- if we are looking, will we look above and by how much?
+				if math.random(1,self.search_rate_above) == 1 then
+					pos2.y = pos2.y + self.search_offset_above
+				end	
+				pos1.x = pos1.x - self.search_offset
+				pos1.z = pos1.z - self.search_offset	
+				pos2.x = pos2.x + self.search_offset
+				pos2.z = pos2.z + self.search_offset
+				if self.debugging_goblins == true then
+					print (self.name)
+			        	print ("at                  " .. self.object:getpos().x, self.object:getpos().y, self.object:getpos().z)
+					print ("is searching between" .. pos1.x, pos1.y, pos1.z)
+					print ("and                 " .. pos2.x, pos2.y, pos2.z)
+				end
 				local nodelist = minetest.find_nodes_in_area(pos1, pos2, self.replace_what)
 				if self.replace_what
 				and #nodelist > 0 then
-					print (#nodelist.." nodes found by "..self.description.." !!!")
+					--print (#nodelist.." nodes found by "..self.description.." !!!")
 					--for k,v in pairs(nodelist) do print(minetest.get_node(v).name.. " found!!") end
 					for key,value in pairs(nodelist) do 
+						-- ok we see some nodes around us, are we going to replace them?
 						if math.random(1,self.replace_rate) == 1 then
-							print(self.replace_with.." placed")
+							if self.debugging_goblins == true then
+								print(self.replace_with.." placed")
+							end
 							minetest.set_node(value, {name = self.replace_with})
 						end
 					 end	

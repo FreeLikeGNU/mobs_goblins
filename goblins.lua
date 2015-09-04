@@ -15,7 +15,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_cobble", {
 	hp_min = 5,
 	hp_max = 10,
 	armor = 100,
-	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.0,0.35},
+	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
@@ -49,10 +49,17 @@ mobs_goblins:register_mob("mobs_goblins:goblin_cobble", {
 	light_damage = 0,
 	lifetimer = 360,
 	follow = {"default:diamond"},
-		replace_rate = 20,
-		replace_what = {"default:stone","default:desert_stone",},
-		replace_with = "default:mossycobble",
-		replace_offset = 1,
+-- updated node searching!
+	search_rate = 10,
+	search_rate_above = 1,
+	search_rate_below = 1,
+	search_offset = 2,
+	search_offset_below = 2,
+	search_offset_above = 2,
+	replace_rate = 5,
+	replace_what = {"default:stone","default:desert_stone","default:torch"},
+	replace_with = "default:mossycobble",
+
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -128,7 +135,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_digger", {
 	hp_min = 5,
 	hp_max = 10,
 	armor = 100,
-	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.0,0.35},
+	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
@@ -160,10 +167,17 @@ mobs_goblins:register_mob("mobs_goblins:goblin_digger", {
 	light_damage = 0,
 	lifetimer = 360,
 	follow = {"default:diamond"},
-		replace_rate = 20,
-		replace_what = {"default:stone","default:desert_stone","default:torch"},
-		replace_with = "air",
-		replace_offset = 1,
+-- updated node searching!
+	search_rate = 10,
+	search_rate_above = 10,
+	search_rate_below = 20,
+	search_offset = 1,
+	search_offset_below = 1,
+	search_offset_above = 1,
+	replace_rate = 4,
+	replace_what = {"default:dirt","default:gravel","default:stone","default:desert_stone","default:torch"},
+	replace_with = "air",
+
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -240,7 +254,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
 	hp_min = 5,
 	hp_max = 10,
 	armor = 100,
-	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.0,0.35},
+	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
@@ -272,10 +286,17 @@ mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
 	lava_damage = 2,
 	light_damage = 0,
 	follow = {"default:diamond"},
-		replace_rate = 30,
-		replace_what = {"default:torch",},
-		replace_with = "air",
-		replace_offset = 2,
+-- updated node searching!
+	search_rate = 10,
+	search_rate_above = 1,
+	search_rate_below = 1,
+	search_offset = 2,
+	search_offset_below = 2,
+	search_offset_above = 2,
+	replace_rate = 5,
+	replace_what = {"default:torch"},
+	replace_with = "default:air",
+
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -351,7 +372,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
 	hp_min = 10,
 	hp_max = 20,
 	armor = 100,
-	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.0,0.35},
+	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
@@ -383,10 +404,17 @@ mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
 	lava_damage = 2,
 	light_damage = 0,
 	follow = "default:diamond",
-		replace_rate = 40,
-		replace_what = {"default:torch",},
-		replace_with = "air",
-		replace_offset = 2,
+-- updated node searching!
+	search_rate = 10,
+	search_rate_above = 1,
+	search_rate_below = 1,
+	search_offset = 2,
+	search_offset_below = 2,
+	search_offset_above = 2,
+	replace_rate = 5,
+	replace_what = {"default:torch"},
+	replace_with = "default:air",
+
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -462,7 +490,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 	hp_min = 10,
 	hp_max = 30,
 	armor = 100,
-	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.0,0.35},
+	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
@@ -494,10 +522,17 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 	lava_damage = 2,
 	light_damage = 0,
 	follow = "default:diamond",
-		replace_rate = 40,
-		replace_what = {"default:torch",},
-		replace_with = "air",
-		replace_offset = 3,
+-- updated node searching!
+	search_rate = 10,
+	search_rate_above = 1,
+	search_rate_below = 1,
+	search_offset = 2,
+	search_offset_below = 2,
+	search_offset_above = 2,
+	replace_rate = 5,
+	replace_what = {"default:torch"},
+	replace_with = "default:air",
+
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -565,7 +600,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 })
 mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 	description = "Diamond Goblin",
-	type = "animal",
+	type = "monster",
 	passive = false,
 	damage = 3,
 	attack_type = "dogfight",
@@ -573,7 +608,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 	hp_min = 20,
 	hp_max = 30,
 	armor = 100,
-	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.0,0.35},
+	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
@@ -605,10 +640,17 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 	lava_damage = 2,
 	light_damage = 0,
 	follow = "default:diamond",
-		replace_rate = 40,
-		replace_what = {"default:torch",},
-		replace_with = "air",
-		replace_offset = 3,
+-- updated node searching!
+	search_rate = 10,
+	search_rate_above = 1,
+	search_rate_below = 1,
+	search_offset = 2,
+	search_offset_below = 2,
+	search_offset_above = 2,
+	replace_rate = 5,
+	replace_what = {"default:torch"},
+	replace_with = "default:air",
+
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -684,7 +726,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 	hp_min = 20,
 	hp_max = 40,
 	armor = 100,
-	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.0,0.35},
+	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
@@ -715,10 +757,17 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 	lava_damage = 2,
 	light_damage = 0,
 	follow = "default:diamond",
-		replace_rate = 40,
-		replace_what = {"default:torch",},
-		replace_with = "air",
-		replace_offset = 3,
+-- updated node searching!
+	search_rate = 10,
+	search_rate_above = 1,
+	search_rate_below = 1,
+	search_offset = 2,
+	search_offset_below = 2,
+	search_offset_above = 2,
+	replace_rate = 5,
+	replace_what = {"default:torch"},
+	replace_with = "default:air",
+
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -784,13 +833,13 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 	end,
 		
 })
--- spawn underground near ore and dungeons, except cobble goblins who create goblin lairs near stone.
+-- spawn at or below 0 near ore and dungeons and goblin lairs (areas of mossy cobble), except diggers that will dig out caves from stone and cobble goblins who create goblin lairs near stone.
 --function mobs_goblins:register_spawn(name, nodes, max_light, min_light, chance, active_object_count, max_height)
-mobs_goblins:register_spawn("mobs_goblins:goblin_cobble", {"group:stone"}, 1000, 0, 50, 1, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_digger", {"group:stone"}, 1000, 0, 50, 1, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_coal", {"default:torch", "default:coal", "default:mossycobble"}, 1000, 0, 30, 1, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron","default:mossycobble",},  10, 0, 30, 1, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_gold", {"default:stone_with_gold","default:mossycobble", },  10, 0, 30, 1, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_diamond", {"default:stone_with_diamond","default:mossycobble", },  30, 0, 100, 1, 1)
-mobs_goblins:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese","default:mossycobble", },  10, 0, 300, 1, 1)
+mobs_goblins:register_spawn("mobs_goblins:goblin_cobble", {"group:stone"}, 100, 0, 50, 1, 0)
+mobs_goblins:register_spawn("mobs_goblins:goblin_digger", {"group:stone"}, 100, 0, 50, 1, 0)
+mobs_goblins:register_spawn("mobs_goblins:goblin_coal", {"default:torch", "default:coal", "default:mossycobble"}, 30, 0, 5, 1, 0)
+mobs_goblins:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron","default:mossycobble",},  30, 0, 5, 1, 0)
+mobs_goblins:register_spawn("mobs_goblins:goblin_gold", {"default:stone_with_gold","default:mossycobble", },  30, 0, 5, 1, 0)
+mobs_goblins:register_spawn("mobs_goblins:goblin_diamond", {"default:stone_with_diamond","default:mossycobble", },  5, 0, 100, 1, 0)
+mobs_goblins:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese","default:mossycobble", },  30, 0, 5, 2, 0)
 mobs_goblins:register_egg("mobs_goblins:goblin_cobble", "goblin egg", "default:mossycobble", 1)
