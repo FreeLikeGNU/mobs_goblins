@@ -11,7 +11,7 @@ mobs_goblins.remove = minetest.setting_getbool("remove_far_mobs") or false
 
 function mobs_goblins:register_mob(name, def)
 	minetest.register_entity(name, {
-		debugging_goblins = def.debugging_goblins or true,
+		debugging_goblins = false;
 		stepheight = def.stepheight or 0.6,
 		name = name,
 		description = def.description or name,
