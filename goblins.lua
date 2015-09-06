@@ -1,4 +1,4 @@
-
+ 
 -- Npc by TenPlus1 converted for FLG Goblins :D
 
 mobs_goblins.goblin_drops = {
@@ -31,6 +31,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_cobble", {
 		attack = "goblins_goblin_attack",
 		damage = "goblins_goblin_damage",
 		death = "goblins_goblin_death",
+		replace = "goblins_goblin_pick",
 		distance = 15,
 	},
 	walk_velocity = 2,
@@ -59,6 +60,8 @@ mobs_goblins:register_mob("mobs_goblins:goblin_cobble", {
 	replace_rate = 5,
 	replace_what = {"default:stone","default:desert_stone","default:torch"},
 	replace_with = "default:mossycobble",
+	replace_rate_secondary = 3,
+	replace_with_secondary = "mobs_goblins:mossycobble_trap",
 
 	view_range = 15,
 	owner = "",
@@ -149,6 +152,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_digger", {
 		attack = "goblins_goblin_attack",
 		damage = "goblins_goblin_damage",
 		death = "goblins_goblin_death",
+		replace = "goblins_goblin_pick",
 		distance = 15,
 	},
 	walk_velocity = 2,
@@ -269,6 +273,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
 		attack = "goblins_goblin_attack",
 		damage = "goblins_goblin_damage",
 		death = "goblins_goblin_death",
+		replace = "goblins_goblin_pick",
 		distance = 15,
 	},
 	walk_velocity = 2,
@@ -296,7 +301,8 @@ mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
 	replace_rate = 5,
 	replace_what = {"default:torch","default:stone_with_coal","default:stone", "default:dessert_stone"},
 	replace_with = "air",
-
+	replace_rate_secondary = 3,  --or maybe just set a nasty trap
+	replace_with_secondary = "mobs_goblins:stone_with_coal_trap", 
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -387,6 +393,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
 		attack = "goblins_goblin_attack",
 		damage = "goblins_goblin_damage",
 		death = "goblins_goblin_death",
+		replace = "goblins_goblin_pick",
 		distance = 15,
 	},
 	walk_velocity = 2,
@@ -413,7 +420,9 @@ mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
 	search_offset_above = 2,
 	replace_rate = 5,
 	replace_what = {"default:torch","default:stone_with_iron", "default:stone", "default:dessert_stone"},
-	replace_with = "air",
+	replace_with = "air",  --steal outright
+	replace_rate_secondary = 3,  --or maybe just set a nasty trap
+	replace_with_secondary = "mobs_goblins:stone_with_iron_trap", 
 
 	view_range = 15,
 	owner = "",
@@ -505,6 +514,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 		attack = "goblins_goblin_attack",
 		damage = "goblins_goblin_damage",
 		death = "goblins_goblin_death",
+		replace = "goblins_goblin_pick",
 		distance = 15,
 	},
 	walk_velocity = 2,
@@ -532,7 +542,8 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 	replace_rate = 5,
 	replace_what = {"default:torch","default:stone_with_gold", "default:stone", "default:dessert_stone"},
 	replace_with = "air",
-
+	replace_rate_secondary = 4,  --or maybe just set a nasty trap
+	replace_with_secondary = "mobs_goblins:stone_with_gold_trap", 
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -623,6 +634,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 		attack = "goblins_goblin_attack",
 		damage = "goblins_goblin_damage",
 		death = "goblins_goblin_death",
+		replace = "goblins_goblin_pick",
 		distance = 15,
 	},
 	walk_velocity = 2,
@@ -650,7 +662,8 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 	replace_rate = 5,
 	replace_what = {"default:torch","default:stone_with_diamond", "default:stone", "default:dessert_stone"},
 	replace_with = "air",
-
+	replace_rate_secondary = 3,  --or maybe just set a nasty trap
+	replace_with_secondary = "mobs_goblins:stone_with_diamond_trap", 
 	view_range = 15,
 	owner = "",
 	order = "follow",
@@ -740,6 +753,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 		attack = "goblins_goblin_attack",
 		damage = "goblins_goblin_damage",
 		death = "goblins_goblin_death",
+		replace = "goblins_goblin_pick",
 		distance = 15,
 	},
 	walk_velocity = 2,
@@ -766,7 +780,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 	search_offset_above = 2,
 	replace_rate = 5,
 	replace_what = {"default:torch", "group:stone"},
-	replace_with = "default:mossycobble",
+	replace_with = "default:mossycobble_trap",
 
 	view_range = 15,
 	owner = "",
@@ -836,8 +850,8 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 -- spawn at or below 0 near ore and dungeons and goblin lairs (areas of mossy cobble), except diggers that will dig out caves from stone and cobble goblins who create goblin lairs near stone.
 --function mobs_goblins:register_spawn(name, nodes, max_light, min_light, chance, active_object_count, max_height)
 
-mobs_goblins:register_spawn("mobs_goblins:goblin_cobble", {"group:stone"}, 100, 0, 20, 3, 0)
-mobs_goblins:register_spawn("mobs_goblins:goblin_digger", {"group:stone"}, 100, 0, 20, 3, 0)
+mobs_goblins:register_spawn("mobs_goblins:goblin_cobble", {"group:stone"}, 100, 0, 20, 4, 0)
+mobs_goblins:register_spawn("mobs_goblins:goblin_digger", {"group:stone"}, 100, 0, 20, 4, 0)
 mobs_goblins:register_spawn("mobs_goblins:goblin_coal", {"default:stone_with_coal"}, 100, 0, 1, 3, 0)
 mobs_goblins:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron"}, 100, 0, 1, 3, 0)
 mobs_goblins:register_spawn("mobs_goblins:goblin_gold", {"default:stone_with_gold" }, 100, 0, 1, 2, 0)

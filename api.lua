@@ -77,6 +77,9 @@ function mobs_goblins:register_mob(name, def)
 		-- what nodes will be replaced?
 		replace_what = def.replace_what,
 		replace_with = def.replace_with,
+		-- or maybe something different?
+		replace_rate_secondary = def.replace_rate_secondary or 0,
+		replace_with_secondary = def.replace_with_secondary or def.replace_with,
 		timer = 0,
 		env_damage_timer = 0, -- only if state = "attack"
 		attack = {player=nil, dist=nil},
@@ -249,10 +252,22 @@ function mobs_goblins:register_mob(name, def)
 					for key,value in pairs(nodelist) do 
 						-- ok we see some nodes around us, are we going to replace them?
 						if math.random(1,self.replace_rate) == 1 then
-							if self.debugging_goblins == true then
-								print(self.replace_with.." placed")
-							end
-							minetest.set_node(value, {name = self.replace_with})
+							minetest.after(.1, function()
+								if math.random(1,self.replace_rate_secondary) == 1 then
+									minetest.set_node(value, {name = self.replace_with_secondary})
+								else
+									minetest.set_node(value, {name = self.replace_with})
+								end
+								if self.debugging_goblins == true then
+									print(self.replace_with.." placed")
+								end
+								minetest.sound_play(self.sounds.replace, {
+								object = self.object,
+								max_hear_distance = self.sounds.distance })
+							end)
+							
+							
+						        --wait self.replace_delay
 						end
 					 end	
 				end

@@ -29,6 +29,7 @@ http://creativecommons.org/licenses/by-sa/3.0/
 * Sound files by:
  * artisticdude http://opengameart.org/content/goblins-sound-pack CC0-license
  * Ogrebane http://opengameart.org/content/monster-sound-pack-volume-1 CC0-license
+ * spookymodem http://opengameart.org/content/mining-pick CC-BY 3.0
 
 * Thanks to Napiophelios for the goblin king skin
 https://forum.minetest.net/viewtopic.php?f=9&t=13004#p186921
