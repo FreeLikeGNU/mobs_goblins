@@ -11,7 +11,7 @@ mobs_goblins.remove = minetest.setting_getbool("remove_far_mobs") or false
 
 function mobs_goblins:register_mob(name, def)
 	minetest.register_entity(name, {
-		debugging_goblins = false;
+		debugging_goblins = true;
 		stepheight = def.stepheight or 0.6,
 		name = name,
 		description = def.description or name,
@@ -252,7 +252,7 @@ function mobs_goblins:register_mob(name, def)
 					for key,value in pairs(nodelist) do 
 						-- ok we see some nodes around us, are we going to replace them?
 						if math.random(1,self.replace_rate) == 1 then
-							minetest.after(.1, function()
+							
 								if math.random(1,self.replace_rate_secondary) == 1 then
 									minetest.set_node(value, {name = self.replace_with_secondary})
 								else
@@ -264,7 +264,7 @@ function mobs_goblins:register_mob(name, def)
 								minetest.sound_play(self.sounds.replace, {
 								object = self.object,
 								max_hear_distance = self.sounds.distance })
-							end)
+							
 							
 							
 						        --wait self.replace_delay
@@ -1320,7 +1320,7 @@ function mobs_goblins:spawn_specific(name, nodes, neighbors, min_light, max_ligh
 			-- spawn mob half block higher
 			pos.y = pos.y - 0.5
 			minetest.add_entity(pos, name)
-			print ("Spawned "..name.." at "..minetest.pos_to_string(pos).." on "..node.name.." near "..neighbors[1])
+			print ("Spawned "..name.." at "..minetest.pos_to_string(pos).." on "..node.name.." near "..neighbors)
 
 		end
 	})
