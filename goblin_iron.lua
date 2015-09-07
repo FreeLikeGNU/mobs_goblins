@@ -1,23 +1,22 @@
 
 
-mobs:register_mob("mobs_goblins:goblin_cobble", {
-	description = "Cobble Goblin",
-	type = "animal",
+mobs:register_mob("mobs_goblins:goblin_iron", {
+	description = "Iron Goblin",
+	type = "monster",
 	passive = false,
-	damage = 1,
+	damage = 2,
 	attack_type = "dogfight",
-	attacks_monsters = true,
-	hp_min = 5,
-	hp_max = 10,
+	attacks_monsters = false,
+	hp_min = 10,
+	hp_max = 20,
 	armor = 100,
 	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
 		textures = {
-			{"goblins_goblin_cobble1.png"},
-			{"goblins_goblin_cobble2.png"},
-			
+			{"goblins_goblin_iron1.png"},
+			{"goblins_goblin_iron2.png"},
 		},
 	makes_footstep_sound = true,
 	sounds = {
@@ -32,18 +31,17 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 	run_velocity = 3,
 	jump = true,
 	drops = {
-		{name = "default:mossycobble",
+		{name = "default:iron_lump",
 		chance = 1, min = 1, max = 3},
 		{name = "default:apple",
 		chance = 2, min = 1, max = 2},
-		{name = "default:torch",
-		chance = 3, min = 1, max = 10},
+		{name = "default:pick_steel",
+		chance = 5, min = 1, max = 1},
 	},
 	water_damage = 0,
 	lava_damage = 2,
 	light_damage = 0,
-	lifetimer = 360,
-	follow = {"default:diamond"},
+	follow = "default:diamond",
 	view_range = 10,
 	owner = "",
 	order = "follow",
@@ -110,10 +108,10 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 
 	do_custom = function(self)
 		mobs.search_replace(self.object:getpos(), 10, 5,
-		{"default:stone","default:desert_stone","default:torch"},
-		"default:mossycobble")
+		{"default:torch","default:stone_with_iron", "default:stone"},
+		"air")
 	end,
 })
-mobs:register_egg("mobs_goblins:goblin_cobble", "Goblin Egg (cobble)", "default_mossycobble.png", 1)
-mobs:register_spawn("mobs_goblins:goblin_cobble", {"group:stone"}, 100, 0, 20, 3, 0)
+mobs:register_egg("mobs_goblins:goblin_iron", "Goblin Egg (iron)", "default_mossycobble.png", 1)
+mobs:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron"}, 100, 0, 1, 3, 0)
 

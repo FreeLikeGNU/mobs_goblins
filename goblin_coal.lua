@@ -1,7 +1,7 @@
 
 
-mobs:register_mob("mobs_goblins:goblin_cobble", {
-	description = "Cobble Goblin",
+mobs:register_mob("mobs_goblins:goblin_coal", {
+	description = "Coal Goblin",
 	type = "animal",
 	passive = false,
 	damage = 1,
@@ -15,9 +15,8 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
 		textures = {
-			{"goblins_goblin_cobble1.png"},
-			{"goblins_goblin_cobble2.png"},
-			
+			{"goblins_goblin_coal1.png"},
+			{"goblins_goblin_coal2.png"},
 		},
 	makes_footstep_sound = true,
 	sounds = {
@@ -32,7 +31,7 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 	run_velocity = 3,
 	jump = true,
 	drops = {
-		{name = "default:mossycobble",
+		{name = "default:coal_lump",
 		chance = 1, min = 1, max = 3},
 		{name = "default:apple",
 		chance = 2, min = 1, max = 2},
@@ -42,7 +41,6 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 	water_damage = 0,
 	lava_damage = 2,
 	light_damage = 0,
-	lifetimer = 360,
 	follow = {"default:diamond"},
 	view_range = 10,
 	owner = "",
@@ -110,10 +108,11 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 
 	do_custom = function(self)
 		mobs.search_replace(self.object:getpos(), 10, 5,
-		{"default:stone","default:desert_stone","default:torch"},
-		"default:mossycobble")
+		{"default:torch", "default:stone_with_coal"},
+		"air")
 	end,
+
 })
-mobs:register_egg("mobs_goblins:goblin_cobble", "Goblin Egg (cobble)", "default_mossycobble.png", 1)
-mobs:register_spawn("mobs_goblins:goblin_cobble", {"group:stone"}, 100, 0, 20, 3, 0)
+mobs:register_egg("mobs_goblins:goblin_coal", "Goblin Egg (coal)", "default_mossycobble.png", 1)
+mobs:register_spawn("mobs_goblins:goblin_coal", {"default:stone_with_coal"}, 100, 0, 1, 3, 0)
 

@@ -1,23 +1,21 @@
 
 
-mobs:register_mob("mobs_goblins:goblin_cobble", {
-	description = "Cobble Goblin",
-	type = "animal",
+mobs:register_mob("mobs_goblins:goblin_king", {
+	description = "Goblin King",
+	type = "monster",
 	passive = false,
-	damage = 1,
+	damage = 4,
 	attack_type = "dogfight",
-	attacks_monsters = true,
-	hp_min = 5,
-	hp_max = 10,
+	attacks_monsters = false,
+	hp_min = 20,
+	hp_max = 40,
 	armor = 100,
 	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
 		textures = {
-			{"goblins_goblin_cobble1.png"},
-			{"goblins_goblin_cobble2.png"},
-			
+			{"goblins_goblin_king.png"},
 		},
 	makes_footstep_sound = true,
 	sounds = {
@@ -32,18 +30,17 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 	run_velocity = 3,
 	jump = true,
 	drops = {
-		{name = "default:mossycobble",
-		chance = 1, min = 1, max = 3},
+		{name = "default:pick_mese",
+		chance = 1, min = 1, max = 1},
 		{name = "default:apple",
-		chance = 2, min = 1, max = 2},
-		{name = "default:torch",
-		chance = 3, min = 1, max = 10},
+		chance = 2, min = 1, max = 10},
+		{name = "default:mese_crystal",
+		chance = 5, min = 1, max = 1},
 	},
 	water_damage = 0,
 	lava_damage = 2,
 	light_damage = 0,
-	lifetimer = 360,
-	follow = {"default:diamond"},
+	follow = "default:diamond",
 	view_range = 10,
 	owner = "",
 	order = "follow",
@@ -110,10 +107,10 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 
 	do_custom = function(self)
 		mobs.search_replace(self.object:getpos(), 10, 5,
-		{"default:stone","default:desert_stone","default:torch"},
-		"default:mossycobble")
+		{"default:torch", "default:stone","default:stone_with_iron","default:stone_with_gold","default:stone_with_diamond"},
+		"air")
 	end,
 })
-mobs:register_egg("mobs_goblins:goblin_cobble", "Goblin Egg (cobble)", "default_mossycobble.png", 1)
-mobs:register_spawn("mobs_goblins:goblin_cobble", {"group:stone"}, 100, 0, 20, 3, 0)
+mobs:register_egg("mobs_goblins:goblin_king", "Goblin King Egg", "default_mossycobble.png", 1)
+mobs:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese","default:mossycobble", }, 100, 0, 2, 1, 0)
 

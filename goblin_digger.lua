@@ -1,13 +1,6 @@
 -- goblins_digger.lua
 --
 
-mobs.goblin_drops = {
-	"default:pick_steel",  "default:sword_steel",
-	"default:shovel_steel", "farming:bread", "bucket:bucket_water"
-}
-
-local debugging_goblins = false
- 
 local diggers_walk = function(self)
 	local pos = self.object:getpos()
 	-- local ai_radius = 3
@@ -51,7 +44,7 @@ local diggers_walk = function(self)
 				y = -20,
 				z = math.cos(yaw)
 			}
-			do_jump(self)
+			mobs.do_jump(self)
 		end
 
 		self:set_animation("walk")
@@ -80,7 +73,7 @@ local diggers_walk = function(self)
 			self:set_animation("walk")
 			self.set_velocity(self, self.walk_velocity)
 		else
-			minetest.chat_send_player('singleplayer',"stopped by "..node.name)
+			-- minetest.chat_send_player('singleplayer',"stopped by "..node.name)
 			self.object:setyaw((math.floor(yaw + math.random(1,3)) % 4) * math.pi * 0.5)
 
 			self.set_velocity(self, self.walk_velocity)
@@ -89,7 +82,7 @@ local diggers_walk = function(self)
 		local r = math.random()
 		if r <= 0.05 then
 			-- self.digging_state = "coffee_break"
-		elseif r <= 0.06 then
+		elseif r <= 0.07 then
 			self.digging_state = "room"
 		elseif r < 0.2 then
 			local nd = math.random(0,3)
@@ -240,6 +233,12 @@ mobs:register_mob("mobs_goblins:goblin_digger", {
 
 	custom_walk = function(self)
 		diggers_walk(self)
+	end,
+
+	do_custom = function(self)
+		mobs.search_replace(self.object:getpos(), 10, 5,
+		{"default:stone","default:desert_stone","default:torch"},
+		"air")
 	end,
 })
 mobs:register_egg("mobs_goblins:goblin_digger", "Goblin Egg (digger)", "default_mossycobble.png", 1)
