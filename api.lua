@@ -1,26 +1,25 @@
--- Mobs Api (13th August 2015)
-mobs_goblins = {}
-mobs_goblins.mod = "redo"
+-- Mobs Api (5th September 2015)
+mobs = {}
+mobs.mod = "redo"
 
--- Initial settings check
-local damage_enabled = minetest.setting_getbool("enable_damage") or true
-local peaceful_only = minetest.setting_getbool("only_peaceful_mobs") or false
-local enable_blood = minetest.setting_getbool("mobs_enable_blood") or true
-mobs_goblins.protected = tonumber(minetest.setting_get("mobs_spawn_protected")) or 0
-mobs_goblins.remove = minetest.setting_getbool("remove_far_mobs") or false
+-- Load settings
+local damage_enabled = minetest.setting_getbool("enable_damage")
+local peaceful_only = minetest.setting_getbool("only_peaceful_mobs")
+local disable_blood = minetest.setting_getbool("mobs_disable_blood")
+mobs.protected = tonumber(minetest.setting_get("mobs_spawn_protected")) or 1
+mobs.remove = minetest.setting_getbool("remove_far_mobs")
 
-function mobs_goblins:register_mob(name, def)
+function mobs:register_mob(name, def)
 	minetest.register_entity(name, {
-		debugging_goblins = true;
 		stepheight = def.stepheight or 0.6,
 		name = name,
-		description = def.description or name,
 		fly = def.fly,
 		fly_in = def.fly_in or "air",
 		owner = def.owner or "",
 		order = def.order or "",
 		on_die = def.on_die,
 		do_custom = def.do_custom,
+		custom_walk = def.custom_walk,
 		jump_height = def.jump_height or 6,
 		jump_chance = def.jump_chance or 0,
 		rotate = math.rad(def.rotate or 0), --  0=front, 90=side, 180=back, 270=side2
@@ -61,28 +60,16 @@ function mobs_goblins:register_mob(name, def)
 		recovery_time = def.recovery_time or 0.5,
 		knock_back = def.knock_back or 3,
 		blood_amount = def.blood_amount or 5,
-		blood_texture = def.blood_texture or "goblins_blood.png",
+		blood_texture = def.blood_texture or "mobs_blood.png",
 		shoot_offset = def.shoot_offset or 0,
 		floats = def.floats or 1, -- floats in water by default
-
-		search_rate = def.search_rate, --how often to we search for nodes?
-		-- how often do we lookfor nodes above or below? (relative to nodes around us, will be same if undefined)
-		search_rate_above = def.search_rate_above or 1, 
-		search_rate_below = def.search_rate_below or 1,
-		-- how far away can we look for nodes?
-		search_offset = def.search_offset or 0,
-		search_offset_above = def.search_offset_above or 0,
-		search_offset_below = def.search_offset_below or 0,
-		replace_rate = def.replace_rate, -- how often do we replace nodes we find?
-		-- what nodes will be replaced?
+		replace_rate = def.replace_rate,
 		replace_what = def.replace_what,
 		replace_with = def.replace_with,
-		-- or maybe something different?
-		replace_rate_secondary = def.replace_rate_secondary or 0,
-		replace_with_secondary = def.replace_with_secondary or def.replace_with,
+		replace_offset = def.replace_offset or 0,
 		timer = 0,
 		env_damage_timer = 0, -- only if state = "attack"
-		attack = {player=nil, dist=nil},
+		attack = {player = nil, dist = nil},
 		state = "stand",
 		tamed = false,
 		pause_timer = 0,
@@ -199,7 +186,6 @@ function mobs_goblins:register_mob(name, def)
 		end,
 		
 		on_step = function(self, dtime)
-
 			if self.type == "monster"
 			and peaceful_only then
 				self.object:remove()
@@ -212,7 +198,7 @@ function mobs_goblins:register_mob(name, def)
 				self.lifetimer = self.lifetimer - dtime
 				if self.lifetimer <= 0
 				and self.state ~= "attack" then
-					minetest.log("action","lifetimer expired, removed "..self.description)
+					minetest.log("action","lifetimer expired, removed "..self.name)
 					effect(self.object:getpos(), 15, "tnt_smoke.png")
 					self.object:remove()
 					return
@@ -222,54 +208,15 @@ function mobs_goblins:register_mob(name, def)
 			-- check for mob drop/replace (used for chicken egg and sheep eating grass/wheat)
 			if self.replace_rate
 			and self.child == false
-			and math.random(1,self.search_rate) == 1 then
-				--look for nodes
-				local pos1 = self.object:getpos()
-				local pos2 = self.object:getpos()
-				-- if we are looking, will we look below and by how much?
-				if math.random(1,self.search_rate_below) == 1 then
-					pos1.y = pos1.y - self.search_offset_below	
-				end				
-				-- if we are looking, will we look above and by how much?
-				if math.random(1,self.search_rate_above) == 1 then
-					pos2.y = pos2.y + self.search_offset_above
-				end	
-				pos1.x = pos1.x - self.search_offset
-				pos1.z = pos1.z - self.search_offset	
-				pos2.x = pos2.x + self.search_offset
-				pos2.z = pos2.z + self.search_offset
-				if self.debugging_goblins == true then
-					print (self.name)
-			        	print ("at                  " .. self.object:getpos().x, self.object:getpos().y, self.object:getpos().z)
-					print ("is searching between" .. pos1.x, pos1.y, pos1.z)
-					print ("and                 " .. pos2.x, pos2.y, pos2.z)
-				end
-				local nodelist = minetest.find_nodes_in_area(pos1, pos2, self.replace_what)
+			and math.random(1,self.replace_rate) == 1 then
+				local pos = self.object:getpos()
+				pos.y = pos.y + self.replace_offset
+				-- print ("replace node = ".. minetest.get_node(pos).name, pos.y)
 				if self.replace_what
-				and #nodelist > 0 then
-					--print (#nodelist.." nodes found by "..self.description.." !!!")
-					--for k,v in pairs(nodelist) do print(minetest.get_node(v).name.. " found!!") end
-					for key,value in pairs(nodelist) do 
-						-- ok we see some nodes around us, are we going to replace them?
-						if math.random(1,self.replace_rate) == 1 then
-							
-								if math.random(1,self.replace_rate_secondary) == 1 then
-									minetest.set_node(value, {name = self.replace_with_secondary})
-								else
-									minetest.set_node(value, {name = self.replace_with})
-								end
-								if self.debugging_goblins == true then
-									print(self.replace_with.." placed")
-								end
-								minetest.sound_play(self.sounds.replace, {
-								object = self.object,
-								max_hear_distance = self.sounds.distance })
-							
-							
-							
-						        --wait self.replace_delay
-						end
-					 end	
+				and self.object:getvelocity().y == 0
+				and #minetest.find_nodes_in_area(pos, pos, self.replace_what) > 0 then
+				--and self.state == "stand" then
+					minetest.set_node(pos, {name = self.replace_with})
 				end
 			end
 
@@ -338,7 +285,7 @@ function mobs_goblins:register_mob(name, def)
 			end
 
 			if self.sounds.random
-			and math.random(1, 100) <= 10 then
+			and math.random(1, 100) <= 1 then
 				minetest.sound_play(self.sounds.random, {
 					object = self.object,
 					max_hear_distance = self.sounds.distance
@@ -385,7 +332,7 @@ function mobs_goblins:register_mob(name, def)
 
 			end
 			
-			local do_jump = function(self)
+			do_jump = function(self)
 				if self.fly then
 					return
 				end
@@ -436,14 +383,22 @@ function mobs_goblins:register_mob(name, def)
 				end
 			end
 			
-			-- environmental damage timer
+			-- environmental damage timer (every 1 second)
 			self.env_damage_timer = self.env_damage_timer + dtime
 			if self.state == "attack"
 			and self.env_damage_timer > 1 then
 				self.env_damage_timer = 0
 				do_env_damage(self)
+				-- custom function (defined in mob lua file)
+				if self.do_custom then
+					self.do_custom(self)
+				end
 			elseif self.state ~= "attack" then
 				do_env_damage(self)
+				-- custom function
+				if self.do_custom then
+					self.do_custom(self)
+				end
 			end
 			
 			-- find someone to attack
@@ -547,6 +502,11 @@ function mobs_goblins:register_mob(name, def)
 						visual_size = self.base_size,
 						collisionbox = self.base_colbox,
 					})
+					-- jump when grown to now fall into ground
+					local v = self.object:getvelocity()
+					v.y = self.jump_height
+					v.x = 0 ; v.z = 0
+					self.object:setvelocity(v)
 				end
 			end
 
@@ -612,7 +572,7 @@ function mobs_goblins:register_mob(name, def)
 							})
 							ent2.child = true
 							ent2.tamed = true
-							--ent2.following = ent -- follow mother
+							ent2.owner = self.owner
 						end)
 						num = 0
 						break
@@ -637,17 +597,12 @@ function mobs_goblins:register_mob(name, def)
 				end
 			end
 
-			-- custom function (defined in mob lua file)
-			if self.do_custom then
-				self.do_custom(self)
-			end
-
 			if self.type == "npc"
 			and self.order == "follow"
-			and self.state ~= "attack" then
+			and self.state ~= "attack"
+			and self.owner ~= "" then
 				-- npc stop following player if not owner
 				if self.following
-				and self.type == "npc"
 				and self.owner
 				and self.owner ~= self.following:get_player_name() then
 					self.following = nil
@@ -757,7 +712,9 @@ function mobs_goblins:register_mob(name, def)
 				else
 					if self.walk_chance ~= 0
 					and math.random(1, 100) <= self.walk_chance then
-						self.set_velocity(self, self.walk_velocity)
+						if not self.custom_walk then
+							self.set_velocity(self, self.walk_velocity)
+						end
 						self.state = "walk"
 						self.set_animation(self, "walk")
 					end
@@ -771,44 +728,48 @@ function mobs_goblins:register_mob(name, def)
 				end
 
 			elseif self.state == "walk" then
-				local s = self.object:getpos()
-				local lp = minetest.find_node_near(s, 1, {"group:water"})
+				if self.custom_walk then
+					self.custom_walk(self)
+				else
+					local s = self.object:getpos()
+					local lp = minetest.find_node_near(s, 1, {"group:water"})
 
--- water swimmers cannot move out of water
-if self.fly
-and self.fly_in == "default:water_source"
-and not lp then
-	print ("out of water")
-	self.set_velocity(self, 0)
-	self.state = "flop" -- change to undefined state so nothing more happens
-	self:set_animation("stand")
-	return
-end
-				-- if water nearby then turn away
-				if lp then
-					local vec = {x = lp.x - s.x, y = lp.y - s.y, z = lp.z - s.z}
-					yaw = math.atan(vec.z / vec.x) + 3 * math.pi / 2 - self.rotate
-					if lp.x > s.x then
-						yaw = yaw + math.pi
+					-- water swimmers cannot move out of water
+					if self.fly
+						and self.fly_in == "default:water_source"
+						and not lp then
+						print ("out of water")
+						self.set_velocity(self, 0)
+						self.state = "flop" -- change to undefined state so nothing more happens
+						self:set_animation("stand")
+						return
 					end
-					self.object:setyaw(yaw)
+					-- if water nearby then turn away
+					if lp then
+						local vec = {x = lp.x - s.x, y = lp.y - s.y, z = lp.z - s.z}
+						yaw = math.atan(vec.z / vec.x) + 3 * math.pi / 2 - self.rotate
+						if lp.x > s.x then
+							yaw = yaw + math.pi
+						end
+						self.object:setyaw(yaw)
 
-				-- otherwise randomly turn
-				elseif math.random(1, 100) <= 30 then
-					self.object:setyaw(self.object:getyaw() + ((math.random(0, 360) - 180) / 180 * math.pi))
-				end
-				if self.jump and self.get_velocity(self) <= 0.5
-				and self.object:getvelocity().y == 0 then
-					self.direction = {
-						x = math.sin(yaw) * -1,
-						y = -20,
-						z = math.cos(yaw)
-					}
-					do_jump(self)
-				end
+						-- otherwise randomly turn
+					elseif math.random(1, 100) <= 30 then
+						self.object:setyaw(self.object:getyaw() + ((math.random(0, 360) - 180) / 180 * math.pi))
+					end
+					if self.jump and self.get_velocity(self) <= 0.5
+						and self.object:getvelocity().y == 0 then
+						self.direction = {
+							x = math.sin(yaw) * -1,
+							y = -20,
+							z = math.cos(yaw)
+						}
+						do_jump(self)
+					end
 
-				self:set_animation("walk")
-				self.set_velocity(self, self.walk_velocity)
+					self:set_animation("walk")
+					self.set_velocity(self, self.walk_velocity)
+				end
 				if math.random(1, 100) <= 30 then
 					self.set_velocity(self, 0)
 					self.state = "stand"
@@ -897,7 +858,7 @@ end
 						end
 						self.object:remove()
 						pos.y = pos.y - 1
-						mobs_goblins:explosion(pos, 2, 0, 1, self.sounds.explode)
+						mobs:explosion(pos, 2, 0, 1, self.sounds.explode)
 					end
 				end
 				-- end of exploding mobs
@@ -1148,7 +1109,7 @@ end
 			self.object:set_hp( self.health )
 			self.object:set_armor_groups({fleshy = self.armor})
 			self.state = "stand"
-			self.order = "stand"
+			--self.order = "stand"
 			self.following = nil
 			self.old_y = self.object:getpos().y
 			self.object:setyaw(math.random(1, 360) / 180 * math.pi)
@@ -1165,12 +1126,13 @@ end
 		get_staticdata = function(self)
 
 -- remove mob when out of range unless tamed
-if mobs_goblins.remove == true and self.remove_ok and not self.tamed then
-	print ("REMOVED", self.remove_ok, self.description)
+if mobs.remove and self.remove_ok and not self.tamed then
+	print ("REMOVED", self.remove_ok, self.name)
 	self.object:remove()
 end
 self.remove_ok = true
 self.attack = nil
+self.following = nil
 
 			local tmp = {}
 			for _,stat in pairs(self) do
@@ -1188,8 +1150,9 @@ self.attack = nil
 		on_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			-- weapon wear
 			local weapon = hitter:get_wielded_item()
+			local punch_interval = tool_capabilities.full_punch_interval or 1.4
 			if weapon:get_definition().tool_capabilities ~= nil then
-				local wear = ( (weapon:get_definition().tool_capabilities.full_punch_interval or 1.4) / 75 ) * 9000
+				local wear = (punch_interval / 75) * 9000
 				weapon:add_wear(wear)
 				hitter:set_wielded_item(weapon)
 			end
@@ -1215,7 +1178,7 @@ self.attack = nil
 
 			-- blood_particles
 			if self.blood_amount > 0
-			and enable_blood == true then
+			and not disable_blood then
 				local pos = self.object:getpos()
 				pos.y = pos.y + (-self.collisionbox[2] + self.collisionbox[5]) / 2
 				effect(pos, self.blood_amount, self.blood_texture)
@@ -1258,10 +1221,10 @@ self.attack = nil
 	})
 end
 
-mobs_goblins.spawning_mobs = {}
+mobs.spawning_mobs = {}
 
-function mobs_goblins:spawn_specific(name, nodes, neighbors, min_light, max_light, interval, chance, active_object_count, min_height, max_height)
-	mobs_goblins.spawning_mobs[name] = true
+function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light, interval, chance, active_object_count, min_height, max_height)
+	mobs.spawning_mobs[name] = true
 	minetest.register_abm({
 		nodenames = nodes,
 		neighbors = neighbors,
@@ -1270,7 +1233,7 @@ function mobs_goblins:spawn_specific(name, nodes, neighbors, min_light, max_ligh
 		action = function(pos, node, _, active_object_count_wider)
 			-- do not spawn if too many active entities in area
 			if active_object_count_wider > active_object_count
-			or not mobs_goblins.spawning_mobs[name] then
+			or not mobs.spawning_mobs[name] then
 			--or not pos then
 				return
 			end
@@ -1279,7 +1242,7 @@ function mobs_goblins:spawn_specific(name, nodes, neighbors, min_light, max_ligh
 			pos.y = pos.y + 1
 
 			-- mobs cannot spawn inside protected areas if enabled
-			if mobs_goblins.protected == 1
+			if mobs.protected == 1
 			and minetest.is_protected(pos, "") then
 				return
 			end
@@ -1314,21 +1277,21 @@ function mobs_goblins:spawn_specific(name, nodes, neighbors, min_light, max_ligh
 			end
 
 			if minetest.setting_getbool("display_mob_spawn") then
-				minetest.chat_send_all("[mobs_goblins] Spawned "..name.." at "..minetest.pos_to_string(pos))
+				minetest.chat_send_all("[mobs] Add "..name.." at "..minetest.pos_to_string(pos))
 			end
 
 			-- spawn mob half block higher
 			pos.y = pos.y - 0.5
 			minetest.add_entity(pos, name)
-			print ("Spawned "..name.." at "..minetest.pos_to_string(pos).." on "..node.name.." near "..neighbors)
+			--print ("Spawned "..name.." at "..minetest.pos_to_string(pos).." on "..node.name.." near "..neighbors[1])
 
 		end
 	})
 end
 
 -- compatibility with older mob registration
-function mobs_goblins:register_spawn(name, nodes, max_light, min_light, chance, active_object_count, max_height)
-	mobs_goblins:spawn_specific(name, nodes, {"air"}, min_light, max_light, 30, chance, active_object_count, -31000, max_height)
+function mobs:register_spawn(name, nodes, max_light, min_light, chance, active_object_count, max_height)
+	mobs:spawn_specific(name, nodes, {"air"}, min_light, max_light, 30, chance, active_object_count, -31000, max_height)
 end
 
 -- particle effects
@@ -1351,12 +1314,11 @@ function effect(pos, amount, texture, max_size)
 end
 
 -- explosion
-function mobs_goblins:explosion(pos, radius, fire, smoke, sound)
+function mobs:explosion(pos, radius, fire, smoke, sound)
 	-- node hit, bursts into flame (cannot blast through unbreakable/specific nodes)
 	if not fire then fire = 0 end
 	if not smoke then smoke = 0 end
 	local pos = vector.round(pos)
-	local radius = 1
 	local vm = VoxelManip()
 	local minp, maxp = vm:read_from_map(vector.subtract(pos, radius), vector.add(pos, radius))
 	local a = VoxelArea:new({MinEdge = minp, MaxEdge = maxp})
@@ -1386,20 +1348,27 @@ function mobs_goblins:explosion(pos, radius, fire, smoke, sound)
 		p.x = pos.x + x
 		p.y = pos.y + y
 		p.z = pos.z + z
-		if data[vi] ~= c_air and data[vi] ~= c_ignore
-		and data[vi] ~= c_obsidian and data[vi] ~= c_brick
+		if data[vi] ~= c_air
+		and data[vi] ~= c_ignore
+		and data[vi] ~= c_obsidian
+		and data[vi] ~= c_brick
 		and data[vi] ~= c_chest then
 			local n = minetest.get_node(p).name
 			if minetest.get_item_group(n, "unbreakable") ~= 1 then
 				-- if chest then drop items inside
-				if n == "default:chest" then
+				if n == "default:chest"
+				or n == "3dchest:chest" then
 					local meta = minetest.get_meta(p)
 					local inv  = meta:get_inventory()
 					for i = 1,32 do
 						local m_stack = inv:get_stack("main", i)
-						local obj = minetest.add_item(pos, m_stack)
+						local obj = minetest.add_item(p, m_stack)
 						if obj then
-							obj:setvelocity({x = math.random(-2, 2), y = 7, z = math.random(-2, 2)})
+							obj:setvelocity({
+								x = math.random(-2, 2),
+								y = 7,
+								z = math.random(-2, 2)
+							})
 						end
 					end
 				end
@@ -1492,7 +1461,7 @@ function entity_physics(pos, radius)
 end
 
 -- register arrow for shoot attack
-function mobs_goblins:register_arrow(name, def)
+function mobs:register_arrow(name, def)
 	if not name or not def then return end -- errorcheck
 	minetest.register_entity(name, {
 		physical = false,
@@ -1539,7 +1508,9 @@ function mobs_goblins:register_arrow(name, def)
 					end
 					if self.hit_mob
 					and player:get_luaentity().name ~= self.object:get_luaentity().name
-					and player:get_luaentity().name ~= "__builtin:item" then
+					and player:get_luaentity().name ~= "__builtin:item"
+					and player:get_luaentity().name ~= "gauges:hp_bar"
+					and player:get_luaentity().name ~= "signs:text" then
 						self.hit_mob(self, player)
 						self.object:remove() ; -- print ("hit mob")
 						return
@@ -1552,7 +1523,7 @@ function mobs_goblins:register_arrow(name, def)
 end
 
 -- Spawn Egg
-function mobs_goblins:register_egg(mob, desc, background, addegg)
+function mobs:register_egg(mob, desc, background, addegg)
 	local invimg = background
 	if addegg == 1 then
 		invimg = invimg.."^mobs_chicken_egg.png"
@@ -1580,7 +1551,7 @@ function mobs_goblins:register_egg(mob, desc, background, addegg)
 end
 
 -- capture critter (thanks to blert2112 for idea)
-function mobs_goblins:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, force_take, replacewith)
+function mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, force_take, replacewith)
 	if clicker:is_player()
 	and clicker:get_inventory()
 	and not self.child then
@@ -1610,11 +1581,11 @@ function mobs_goblins:capture_mob(self, clicker, chance_hand, chance_net, chance
 			local chance = 0
 			if tool:is_empty() then
 				chance = chance_hand
-			elseif tool:get_name() == "mobs_goblins:net" then
+			elseif tool:get_name() == "mobs:net" then
 				chance = chance_net
 				tool:add_wear(4000) -- 17 uses
 				clicker:set_wielded_item(tool)
-			elseif tool:get_name() == "mobs_goblins:magic_lasso" then
+			elseif tool:get_name() == "mobs:magic_lasso" then
 				-- pick up if owner
 				chance = chance_lasso
 				tool:add_wear(650) -- 100 uses
@@ -1637,59 +1608,36 @@ end
 -- follow what I'm holding ?
 function follow_holding(self, clicker)
 	local item = clicker:get_wielded_item()
-	local follow_item = false
 	local t = type(self.follow)
 
 	-- single item
 	if t == "string"
 	and item:get_name() == self.follow then
-		follow_item = true
+		return true
 
 	-- multiple items
 	elseif t == "table" then
 		for no = 1, #self.follow do
 			if self.follow[no] == item:get_name() then
-				follow_item = true
+				return true
 			end
 		end
-	end
-
-	-- true if can eat/tame with item
-	if follow_item == true then
-		return true
 	end
 
 	return false
 end
 
 -- feeding, taming and breeding (thanks blert2112)
-function mobs_goblins:feed_tame(self, clicker, feed_count, breed)
+function mobs:feed_tame(self, clicker, feed_count, breed)
 
 	if not self.follow then return false end
-
-	local item = clicker:get_wielded_item()
-	local follow_item = false
-	local t = type(self.follow)
-
-	-- single item
-	if t == "string"
-	and item:get_name() == self.follow then
-		follow_item = true
-
-	-- multiple items
-	elseif t == "table" then
-		for no = 1, #self.follow do
-			if self.follow[no] == item:get_name() then
-				follow_item = true
-			end
-		end
-	end
 
 	-- can eat/tame with item in hand
 	if follow_holding(self, clicker) then
 --print ("mmm, tasty")
 		-- take item
 		if not minetest.setting_getbool("creative_mode") then
+			local item = clicker:get_wielded_item()
 			item:take_item()
 			clicker:set_wielded_item(item)
 		end
