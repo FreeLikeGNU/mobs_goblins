@@ -106,9 +106,8 @@ mobs:register_mob("mobs_goblins:goblin_king", {
 	end,
 
 	do_custom = function(self)
-		mobs.search_replace(self.object:getpos(), 10, 5,
-		{"default:torch", "default:stone","default:stone_with_iron","default:stone_with_gold","default:stone_with_diamond"},
-		"air")
+		mobs.search_replace(self.object:getpos(), 10, 5, {"default:torch", "group:stone","default:stone_with_iron","default:stone_with_gold","default:stone_with_diamond"}, "air")
+		mobs.search_replace(self.object:getpos(), 25, 5, {"default:torch", "group:stone","default:stone_with_iron","default:stone_with_gold","default:stone_with_diamond"}, "air")
 	end,
 })
 mobs:register_egg("mobs_goblins:goblin_king", "Goblin King Egg", "default_mossycobble.png", 1)

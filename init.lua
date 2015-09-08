@@ -3,25 +3,31 @@ local path = minetest.get_modpath("mobs_goblins")
 if mobs.mod and mobs.mod == "redo" then
 	mobs.debugging_goblins = false
 
+	vector.floor = function(v)
+		v.x = math.floor(v.x) + 0.1
+		v.y = math.floor(v.y) + 0.1
+		v.z = math.floor(v.z) + 0.1
+		return v
+	end
+
+	vector.flat_floor = function(v)
+		v.x = math.floor(v.x)
+		v.z = math.floor(v.z)
+		return v
+	end
+
+	vector.flat_round = function(v)
+		v.x = math.floor(v.x + 0.5)
+		v.z = math.floor(v.z + 0.5)
+		return v
+	end
+
 	mobs.search_replace = function(pos, search_rate, replace_rate, replace_what, replace_with)
-
 		if math.random(1, search_rate) == 1 then
-
-			pos = vector.round(pos)
-			pos.y = pos.y - 1
+			local pos = vector.round(pos)
 
 			local p1 = vector.subtract(pos, 1)
 			local p2 = vector.add(pos, 1)
-
-			if mobs.debugging_goblins then
-				print ("Goblin at "
-				.. minetest.pos_to_string(pos)
-				.. " searching between "
-				.. minetest.pos_to_string(p1)
-				.. " and "
-				.. minetest.pos_to_string(p2)
-			)
-			end
 
 			--look for nodes
 			local nodelist = minetest.find_nodes_in_area(
@@ -51,6 +57,7 @@ if mobs.mod and mobs.mod == "redo" then
 	dofile(path.."/goblin_gold.lua")
 	dofile(path.."/goblin_diamond.lua")
 	dofile(path.."/goblin_king.lua")
+	dofile(path.."/goblin_traps.lua")
 
 	minetest.log("action", "GOBLINS is lowdids!")
 end

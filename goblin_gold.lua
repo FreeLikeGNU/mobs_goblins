@@ -107,9 +107,8 @@ mobs:register_mob("mobs_goblins:goblin_gold", {
 	end,
 
 	do_custom = function(self)
-		mobs.search_replace(self.object:getpos(), 10, 5,
-		{"default:torch","default:stone_with_gold", "default:stone"},
-		"air")
+		mobs.search_replace(self.object:getpos(), 10, 5, {"default:torch","default:stone_with_gold", "group:stone"}, "air")
+		mobs.search_replace(self.object:getpos(), 80, 5, {"default:torch","default:stone_with_gold", "group:stone"}, "mobs_goblins:stone_with_gold_trap")
 	end,
 })
 mobs:register_egg("mobs_goblins:goblin_gold", "Goblin Egg (gold)", "default_mossycobble.png", 1)

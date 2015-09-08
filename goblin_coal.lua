@@ -107,9 +107,8 @@ mobs:register_mob("mobs_goblins:goblin_coal", {
 	end,
 
 	do_custom = function(self)
-		mobs.search_replace(self.object:getpos(), 10, 5,
-		{"default:torch", "default:stone_with_coal"},
-		"air")
+		mobs.search_replace(self.object:getpos(), 10, 5, {"default:torch", "default:stone_with_coal", "group:stone"}, "air")
+		mobs.search_replace(self.object:getpos(), 50, 5, {"default:torch", "default:stone_with_coal", "group:stone"}, "mobs_goblins:stone_with_coal_trap")
 	end,
 
 })
