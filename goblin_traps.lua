@@ -8,6 +8,8 @@ minetest.register_node("mobs_goblins:mossycobble_trap", {
 	is_ground_content = false,
 	groups = {cracky = 2, stone = 1},
 	sounds = default.node_sound_stone_defaults(),
+	paramtype = "light",
+	light_source =  4,
 })
 
 minetest.register_node("mobs_goblins:stone_with_coal_trap", {
@@ -53,7 +55,6 @@ minetest.register_node("mobs_goblins:stone_with_diamond_trap", {
 })
 
 
-
 --[[ too bad we can't keep track of what physics are set too by other mods...]]
 minetest.register_abm({
 	nodenames = {"mobs_goblins:mossycobble_trap"},
@@ -78,7 +79,7 @@ minetest.register_abm({
 	chance = 3,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		--pos.y =pos.y-0.4
-		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 2)) do--1.3
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 3)) do--1.3
 			if object:is_player() then
 				if object:get_hp() > 0 then
 					object:set_hp(object:get_hp()-1)
@@ -96,12 +97,12 @@ minetest.register_abm({
 	chance = 2,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		--pos.y =pos.y-0.4
-		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 2)) do--1.3
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 4)) do--1.3
 			if object:is_player() then
-				if object:get_hp() > 0 then
-					object:set_hp(object:get_hp()-1)
-					minetest.sound_play("default_dig_crumbly", {pos = pos, gain = 0.5, max_hear_distance = 10})
-				 end
+				minetest.set_node(pos, {name = "default:water_source"})	
+				minetest.after(10, function()
+					minetest.set_node(pos, {name = "mobs_goblins:stone_with_iron_trap"})
+				end)
 			end
 			--elseif not object:is_player() and object:get_hp() == 0 and object:get_luaentity().name ~= "__builtin:item" then
 			--	object:remove()
@@ -114,7 +115,7 @@ minetest.register_abm({
 	chance = 2,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		--pos.y =pos.y-0.4
-		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 2)) do--1.3
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 3)) do--1.3
 			if object:is_player() then
 				if object:get_hp() > 0 then
 					object:set_hp(object:get_hp()-1)
@@ -132,12 +133,12 @@ minetest.register_abm({
 	chance = 2,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		--pos.y =pos.y-0.4
-		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 2)) do--1.3
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 4)) do--1.3
 			if object:is_player() then
-				if object:get_hp() > 0 then
-					object:set_hp(object:get_hp()-2)
-					minetest.sound_play("default_dig_crumbly", {pos = pos, gain = 0.5, max_hear_distance = 10})
-				 end
+				minetest.set_node(pos, {name = "default:lava_source"})	
+				minetest.after(4, function()
+					minetest.set_node(pos, {name = "mobs_goblins:stone_with_gold_trap"})
+				end)	
 			end
 			--elseif not object:is_player() and object:get_hp() == 0 and object:get_luaentity().name ~= "__builtin:item" then
 			--	object:remove()
@@ -151,7 +152,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		--pos.y =pos.y-0.4
-		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 2)) do--1.3
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 4)) do--1.3
 			if object:is_player() then
 				if object:get_hp() > 0 then
 					object:set_hp(object:get_hp()-2)
