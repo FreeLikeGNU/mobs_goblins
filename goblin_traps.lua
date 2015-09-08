@@ -184,6 +184,7 @@ minetest.register_abm({
 })
 
 -- summon a metallic goblin?
+-- pit of iron razors?
 minetest.register_abm({
 	nodenames = {"mobs_goblins:stone_with_iron_trap"},
 	interval = 2,
