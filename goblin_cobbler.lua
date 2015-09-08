@@ -32,7 +32,7 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 	run_velocity = 3,
 	jump = true,
 	drops = {
-		{name = "default:mossycobble",
+		{name = "default:pick_stone",
 		chance = 1, min = 1, max = 3},
 		{name = "default:apple",
 		chance = 2, min = 1, max = 2},
@@ -109,8 +109,9 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 	end,
 
 	do_custom = function(self)
-		mobs.search_replace(self.object:getpos(), 10, 5, {"group:stone", "default:torch"}, "default:mossycobble")
-		mobs.search_replace(self.object:getpos(), 50, 5, {"group:stone", "default:torch"}, "mobs_goblins:mossycobble_trap")
+		mobs.search_replace(self.object:getpos(), 5, 1, {"group:stone"}, "default:mossycobble")
+		mobs.search_replace(self.object:getpos(), 2, 1, {"default:torch", "group:plant"}, "air")
+		mobs.search_replace(self.object:getpos(), 50, 5, {"group:stone"}, "mobs_goblins:mossycobble_trap")
 	end,
 })
 mobs:register_egg("mobs_goblins:goblin_cobble", "Goblin Egg (cobble)", "default_mossycobble.png", 1)

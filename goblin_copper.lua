@@ -1,21 +1,22 @@
 
 
-mobs:register_mob("mobs_goblins:goblin_king", {
-	description = "Goblin King",
+mobs:register_mob("mobs_goblins:goblin_copper", {
+	description = "Copper Goblin",
 	type = "monster",
 	passive = false,
-	damage = 4,
+	damage = 2,
 	attack_type = "dogfight",
 	attacks_monsters = false,
-	hp_min = 20,
-	hp_max = 40,
+	hp_min = 10,
+	hp_max = 20,
 	armor = 100,
 	collisionbox = {-0.35,-1,-0.35, 0.35,-.1,0.35},
 	visual = "mesh",
 	mesh = "goblins_goblin.b3d",
 	drawtype = "front",
 		textures = {
-			{"goblins_goblin_king.png"},
+			{"goblins_goblin_copper1.png"},
+			{"goblins_goblin_copper2.png"},
 		},
 	makes_footstep_sound = true,
 	sounds = {
@@ -30,18 +31,18 @@ mobs:register_mob("mobs_goblins:goblin_king", {
 	run_velocity = 3,
 	jump = true,
 	drops = {
-		{name = "default:pick_mese",
-		chance = 1, min = 1, max = 1},
+		{name = "default:copper_lump",
+		chance = 1, min = 1, max = 3},
 		{name = "default:apple",
-		chance = 2, min = 1, max = 10},
-		{name = "default:mese_crystal",
+		chance = 2, min = 1, max = 2},
+		{name = "default:pick_steel",
 		chance = 5, min = 1, max = 1},
 	},
 	water_damage = 0,
 	lava_damage = 2,
 	light_damage = 0,
 	follow = "default:diamond",
-	view_range = 10,
+	view_range = 15,
 	owner = "",
 	order = "follow",
 	animation = {
@@ -106,11 +107,11 @@ mobs:register_mob("mobs_goblins:goblin_king", {
 	end,
 
 	do_custom = function(self)
-		mobs.search_replace(self.object:getpos(), 10, 1, {"group:stone", "default:stone_with_iron", "default:stone_with_gold", "default:stone_with_diamond"}, "default:mossycobble")
+		mobs.search_replace(self.object:getpos(), 10, 1, {"group:stone", "default:stone_with_copper"}, "default:mossycobble")
 		mobs.search_replace(self.object:getpos(), 2, 1, {"default:torch", "group:plant"}, "air")
-		mobs.search_replace(self.object:getpos(), 25, 5, {"default:torch", "group:stone","default:stone_with_iron","default:stone_with_gold","default:stone_with_diamond"}, "mobs_goblins:mossycobble_trap")
+		mobs.search_replace(self.object:getpos(), 50, 5, {"default:stone_with_copper", "group:stone"}, "mobs_goblins:stone_with_copper_trap")
 	end,
 })
-mobs:register_egg("mobs_goblins:goblin_king", "Goblin King Egg", "default_mossycobble.png", 1)
-mobs:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese","default:mossycobble", }, 100, 0, 2, 1, 0)
+mobs:register_egg("mobs_goblins:goblin_copper", "Goblin Egg (copper)", "default_mossycobble.png", 1)
+mobs:register_spawn("mobs_goblins:goblin_copper", {"default:stone_with_copper"}, 100, 0, 1, 3, 0)
 

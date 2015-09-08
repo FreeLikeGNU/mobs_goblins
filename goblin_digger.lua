@@ -1,103 +1,6 @@
 -- goblins_digger.lua
 --
 
-local diggers_walk = function(self)
-	local pos = self.object:getpos()
-	local cardinals = {{x=0,y=0,z=0.75}, {x=-0.75,y=0,z=0}, {x=0,y=0,z=-0.75}, {x=0.75,y=0,z=0}}
-	local yaw = (math.floor(self.object:getyaw() * 2 / math.pi + 0.5) % 4)
-	local lp = minetest.find_node_near(pos, 1, {"group:water"})
-
-	if not self.digging_state then
-		self.digging_state = "coffee_break"
-	end
-
-	if not self.room_radius then
-		self.room_radius = 1
-	end
-
-	if not self.digging_dir then
-		self.digging_dir = math.random(0,3)
-	end
-
-	if self.digging_state == "coffee_break" then
-		if math.random() < 0.2 then
-			self.digging_state = "tunnel"
-		end
-
-		self:set_animation("walk")
-		self.set_velocity(self, self.walk_velocity)
-		return true
-	elseif self.digging_state == "tunnel" then
-		-- self.object:setpos(vector.flat_round(pos))
-		yaw = self.digging_dir
-		self.object:setyaw(yaw * math.pi * 0.5 + math.random() * 0.5 - 0.25)
-
-		local np = vector.floor(vector.add(pos, cardinals[yaw+1]))
-		local node = minetest.get_node(np)
-
-		if node.name == "air" or minetest.get_item_group(node.name, "stone") > 0 or minetest.get_item_group(node.name, "soil") > 0 or minetest.get_item_group(node.name, "plant") > 0 then
-			-- dig it
-			minetest.remove_node(np)
-			self:set_animation("walk")
-			self.set_velocity(self, self.walk_velocity)
-		else
-			self:set_animation("stand")
-			self.set_velocity(self, 0)
-			-- minetest.chat_send_player('singleplayer',"stopped by "..node.name)
-			print("stopped by "..node.name)
-			if math.random(2) == 1 then
-				self.object:setyaw(((yaw + 1) % 4) * math.pi * 0.5 + math.random() * 0.5 - 0.25)
-			else
-				self.object:setyaw(((yaw - 1) % 4) * math.pi * 0.5 + math.random() * 0.5 - 0.25)
-			end
-
-			self.set_velocity(self, self.walk_velocity)
-		end
-
-		local r = math.random()
-		if r <= 0.05 then  -- normal mobs movement
-			self.digging_state = "coffee_break"
-		elseif r <= 0.07 then  -- build a room
-			self.digging_state = "room"
-		elseif r < 0.2 then  -- turn randomly
-			if math.random(2) == 1 then
-				self.digging_dir = (self.digging_dir + 1) % 4
-			else
-				self.digging_dir = (self.digging_dir - 1) % 4
-			end
-		end
-	elseif self.digging_state == "room" then
-		self:set_animation("stand")
-		local go_on = true
-		for r = 0,self.room_radius do
-			for x = -r,r do
-				for y = 0,r do
-					for z = -r,r do
-						if go_on and r >= self.room_radius and x >= r and y >= r and z >= r then
-							self.room_radius = math.random(1,2) + math.random(0,1)
-							self.digging_state = "coffee_break"
-						end
-
-						if go_on then
-							local np = vector.floor(vector.add(pos, {x=x, y=y, z=z}))
-							local node = minetest.get_node(np)
-							if minetest.get_item_group(node.name, "stone") > 0 or minetest.get_item_group(node.name, "soil") > 0 or minetest.get_item_group(node.name, "plant") > 0 then
-								-- dig it
-								minetest.remove_node(np)
-								go_on = false
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-
-	return false
-	-- minetest.chat_send_player('singleplayer',"diggin_state: "..self.digging_state)
-	-- print(self.digging_state)
-end
-
 mobs:register_mob("mobs_goblins:goblin_digger", {
 	description = "Digger Goblin",
 	type = "animal",
@@ -205,12 +108,13 @@ mobs:register_mob("mobs_goblins:goblin_digger", {
 	end,
 
 	custom_walk = function(self)
-		diggers_walk(self)
+		mobs.goblin_tunneling(self, "digger")
 	end,
 
 	do_custom = function(self)
-		mobs.search_replace(self.object:getpos(), 10, 5, {"group:stone", "default:torch", "group:plant"}, "air")
-		mobs.search_replace(self.object:getpos(), 50, 5, {"group:stone", "default:torch"}, "mobs_goblins:mossycobble_trap")
+		mobs.search_replace(self.object:getpos(), 10, 1, {"group:stone"}, "default:mossycobble")
+		mobs.search_replace(self.object:getpos(), 2, 1, {"default:torch", "group:plant"}, "air")
+		mobs.search_replace(self.object:getpos(), 50, 1, {"group:stone", "default:torch"}, "mobs_goblins:mossycobble_trap")
 	end,
 })
 
