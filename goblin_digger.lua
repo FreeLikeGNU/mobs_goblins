@@ -107,11 +107,9 @@ mobs:register_mob("mobs_goblins:goblin_digger", {
 		mobs:capture_mob(self, clicker, 0, 5, 80, false, nil)
 	end,
 
-	custom_walk = function(self)
-		mobs.goblin_tunneling(self, "digger")
-	end,
-
 	do_custom = function(self)
+		mobs.goblin_tunneling(self, "digger")
+
 		mobs.search_replace(self.object:getpos(), 10, 1, {"group:stone"}, "default:mossycobble")
 		mobs.search_replace(self.object:getpos(), 2, 1, {"default:torch", "group:plant"}, "air")
 		mobs.search_replace(self.object:getpos(), 50, 1, {"group:stone", "default:torch"}, "mobs_goblins:mossycobble_trap")

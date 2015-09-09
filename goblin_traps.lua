@@ -252,12 +252,8 @@ minetest.register_abm({
 		end
 	end})
 
+local singleplayer = minetest.is_singleplayer()
 local setting = minetest.setting_getbool("enable_tnt")
-if setting == true then
-	print("enable_tnt = true")
-else
-	print("enable_tnt ~= true")
-end
 if (not singleplayer and setting ~= true) or (singleplayer and setting == false) then
 	-- wimpier trap for non-tnt settings
 	minetest.register_abm({
