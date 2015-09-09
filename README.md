@@ -10,7 +10,7 @@ https://github.com/FreeLikeGNU/mobs_goblins
 
 This mod adds several Goblins to Minetest that should spawn near ore deposits or lairs underground.
 
-* Goblins dig caves, destroy torches, create lairs and some are aggressive.
+* Goblins dig caves, destroy torches, create lairs, set traps and some are aggressive.
 
 License of Media Files:
 ---------------------------------------
@@ -35,4 +35,4 @@ http://creativecommons.org/licenses/by-sa/3.0/
 https://forum.minetest.net/viewtopic.php?f=9&t=13004#p186921
 goblins_goblin_king.png
 License: Creative Commons CC-BY-SA-3.0 SummerFeilds TP
-    
+* --Thanks to duane-r for his work on making traps nastier!: https://github.com/duane-r/mobs_goblins/blob/work/goblin_traps.lua   
