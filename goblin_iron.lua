@@ -114,6 +114,7 @@ mobs:register_mob("mobs_goblins:goblin_iron", {
 })
 mobs:register_egg("mobs_goblins:goblin_iron", "Goblin Egg (iron)", "default_mossycobble.png", 1)
 mobs:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron"}, 100, 0, 1, 3, 0)
+mobs:register_spawn("mobs_goblins:goblin_iron", {"default:mossycobble"}, 100, 0, 20, 3, 0)
 
 minetest.register_node("mobs_goblins:stone_with_iron_trap", {
 	description = "Iron Trap",

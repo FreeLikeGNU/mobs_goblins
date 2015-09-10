@@ -114,6 +114,7 @@ mobs:register_mob("mobs_goblins:goblin_gold", {
 })
 mobs:register_egg("mobs_goblins:goblin_gold", "Goblin Egg (gold)", "default_mossycobble.png", 1)
 mobs:register_spawn("mobs_goblins:goblin_gold", {"default:stone_with_gold" }, 100, 0, 1, 2, 0)
+mobs:register_spawn("mobs_goblins:goblin_gold", {"default:mossycobble"}, 100, 0, 40, 3, 0)
 
 minetest.register_node("mobs_goblins:molten_gold_source", {
 	description = "Molten Gold Source",

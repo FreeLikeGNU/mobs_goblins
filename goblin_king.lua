@@ -112,5 +112,6 @@ mobs:register_mob("mobs_goblins:goblin_king", {
 	end,
 })
 mobs:register_egg("mobs_goblins:goblin_king", "Goblin King Egg", "default_mossycobble.png", 1)
-mobs:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese","default:mossycobble", }, 100, 0, 2, 1, 0)
+mobs:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese"}, 100, 0, 2, 1, 0)
+mobs:register_spawn("mobs_goblins:goblin_king", {"default:mossycobble"}, 100, 0, 50, 3, 0)
 

@@ -116,4 +116,31 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 })
 mobs:register_egg("mobs_goblins:goblin_cobble", "Goblin Egg (cobble)", "default_mossycobble.png", 1)
 mobs:register_spawn("mobs_goblins:goblin_cobble", {"group:stone"}, 100, 0, 20, 3, 0)
+mobs:register_spawn("mobs_goblins:goblin_cobble", {"default:mossycobble"}, 100, 0, 20, 3, 0)
+
+minetest.register_node("mobs_goblins:mossycobble_trap", {
+	description = "Messy Gobblestone",
+	tiles = {"default_mossycobble.png"},
+	is_ground_content = false,
+	groups = {cracky = 2, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+	paramtype = "light",
+	light_source =  4,
+})
+
+--[[ too bad we can't keep track of what physics are set too by other mods...]]
+minetest.register_abm({
+	nodenames = {"mobs_goblins:mossycobble_trap"},
+	interval = 1,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 0.95)) do -- IDKWTF this is but it works
+				if object:is_player() then
+					object:set_physics_override({speed = 0.1})
+					minetest.after(1, function() -- this effect is temporary
+						object:set_physics_override({speed = 1})  -- we'll just set it to 1 and be done.
+					end)
+				end
+		end
+	end})
 

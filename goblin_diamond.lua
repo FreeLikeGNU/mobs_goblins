@@ -115,6 +115,7 @@ mobs:register_mob("mobs_goblins:goblin_diamond", {
 })
 mobs:register_egg("mobs_goblins:goblin_diamond", "Goblin Egg (diamond)", "default_mossycobble.png", 1)
 mobs:register_spawn("mobs_goblins:goblin_diamond", {"default:stone_with_diamond" }, 100, 0, 1, 2, 0)
+mobs:register_spawn("mobs_goblins:goblin_diamond", {"default:mossycobble"}, 100, 0, 50, 3, 0)
 
 minetest.register_node("mobs_goblins:stone_with_diamond_trap", {
 	description = "Diamond Trap",
