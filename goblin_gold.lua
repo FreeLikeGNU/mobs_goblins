@@ -115,3 +115,124 @@ mobs:register_mob("mobs_goblins:goblin_gold", {
 mobs:register_egg("mobs_goblins:goblin_gold", "Goblin Egg (gold)", "default_mossycobble.png", 1)
 mobs:register_spawn("mobs_goblins:goblin_gold", {"default:stone_with_gold" }, 100, 0, 1, 2, 0)
 
+minetest.register_node("mobs_goblins:molten_gold_source", {
+	description = "Molten Gold Source",
+	inventory_image = minetest.inventorycube("default_lava.png"),
+	drawtype = "liquid",
+	tiles = {
+		{
+			name = "goblins_molten_gold_source_animated.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 3.0,
+			},
+		},
+	},
+	special_tiles = {
+		-- New-style lava source material (mostly unused)
+		{
+			name = "goblins_molten_gold_source_animated.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 3.0,
+			},
+			backface_culling = false,
+		},
+	},
+	paramtype = "light",
+	light_source = default.LIGHT_MAX - 1,
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	drowning = 1,
+	liquidtype = "source",
+	liquid_alternative_flowing = "mobs_goblins:molten_gold_flowing",
+	liquid_alternative_source = "mobs_goblins:molten_gold_source",
+	liquid_viscosity = 7,
+	liquid_renewable = false,
+	liquid_range = 3,
+	damage_per_second = 4 * 2,
+	post_effect_color = {a=192, r=255, g=64, b=0},
+	groups = {lava=3, liquid=2, hot=3, igniter=1},
+})
+
+minetest.register_node("mobs_goblins:molten_gold_flowing", {
+	description = "Flowing Molten Gold",
+	inventory_image = minetest.inventorycube("default_lava.png"),
+	drawtype = "flowingliquid",
+	tiles = {"default_lava.png"},
+	special_tiles = {
+		{
+			name = "goblins_molten_gold_flowing_animated.png",
+			backface_culling = false,
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 3.3,
+			},
+		},
+		{
+			name = "goblins_molten_gold_flowing_animated.png",
+			backface_culling = true,
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 3.3,
+			},
+		},
+	},
+	paramtype = "light",
+	paramtype2 = "flowingliquid",
+	light_source = default.LIGHT_MAX - 1,
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	drowning = 1,
+	liquidtype = "flowing",
+	liquid_alternative_flowing = "mobs_goblins:molten_gold_flowing",
+	liquid_alternative_source = "mobs_goblins:molten_gold_source",
+	liquid_viscosity = 7,
+	liquid_renewable = false,
+	liquid_range = 3,
+	damage_per_second = 4 * 2,
+	post_effect_color = {a=192, r=255, g=64, b=0},
+	groups = {lava=3, liquid=2, hot=3, igniter=1, not_in_creative_inventory=1},
+})
+
+minetest.register_node("mobs_goblins:stone_with_gold_trap", {
+	description = "Gold Trap",
+	tiles = {"default_cobble.png^default_mineral_gold.png"},
+	groups = {cracky = 3},
+	drop = 'default:gold_lump',
+	is_ground_content = false,
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_abm({
+	nodenames = {"mobs_goblins:stone_with_gold_trap"},
+	interval = 1,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 2)) do
+			if object:is_player() then
+				minetest.set_node(pos, {name="mobs_goblins:molten_gold_source"})
+				if object:get_hp() > 0 then
+					object:set_hp(object:get_hp()-2)
+					minetest.sound_play("default_dig_crumbly", {pos = pos, gain = 0.5, max_hear_distance = 10})
+				 end
+			end
+		end
+	end})
+

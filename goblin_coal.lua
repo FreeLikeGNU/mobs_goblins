@@ -116,3 +116,28 @@ mobs:register_mob("mobs_goblins:goblin_coal", {
 mobs:register_egg("mobs_goblins:goblin_coal", "Goblin Egg (coal)", "default_mossycobble.png", 1)
 mobs:register_spawn("mobs_goblins:goblin_coal", {"default:stone_with_coal"}, 100, 0, 1, 3, 0)
 
+minetest.register_node("mobs_goblins:stone_with_coal_trap", {
+	description = "Coal Trap",
+	tiles = {"default_cobble.png^default_mineral_coal.png"},
+	groups = {cracky = 3},
+	drop = 'default:coal_lump',
+	is_ground_content = false,
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_abm({
+	nodenames = {"mobs_goblins:stone_with_coal_trap"},
+	interval = 1,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 2)) do
+			if object:is_player() then
+				minetest.set_node(pos, {name="fire:basic_flame"})
+				if object:get_hp() > 0 then
+					object:set_hp(object:get_hp()-2)
+				end
+			end
+		end
+	end
+})
+

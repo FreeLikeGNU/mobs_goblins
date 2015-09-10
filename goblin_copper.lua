@@ -115,3 +115,48 @@ mobs:register_mob("mobs_goblins:goblin_copper", {
 mobs:register_egg("mobs_goblins:goblin_copper", "Goblin Egg (copper)", "default_mossycobble.png", 1)
 mobs:register_spawn("mobs_goblins:goblin_copper", {"default:stone_with_copper"}, 100, 0, 1, 3, 0)
 
+minetest.register_node("mobs_goblins:stone_with_copper_trap", {
+	description = "Copper Trap",
+	tiles = {"default_cobble.png^default_mineral_copper.png"},
+	groups = {cracky = 3},
+	drop = 'default:copper_lump',
+	is_ground_content = false,
+	sounds = default.node_sound_stone_defaults(),
+})
+
+local function lightning_effects(pos, radius)
+	minetest.add_particlespawner({
+		amount = 30,
+		time = 1,
+		minpos = vector.subtract(pos, radius / 2),
+		maxpos = vector.add(pos, radius / 2),
+		minvel = {x=-10, y=-10, z=-10},
+		maxvel = {x=10,  y=10,  z=10},
+		minacc = vector.new(),
+		maxacc = vector.new(),
+		minexptime = 1,
+		maxexptime = 3,
+		minsize = 16,
+		maxsize = 32,
+		texture = "goblins_lightning.png",
+	})
+end
+
+--[[ based on dwarves cactus]]
+minetest.register_abm({
+	nodenames = {"mobs_goblins:stone_with_copper_trap"},
+	interval = 1,
+	chance = 2,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 3)) do
+			if object:is_player() then
+				if object:get_hp() > 0 then
+					object:set_hp(object:get_hp()-1)
+					-- sprite
+					lightning_effects(pos, 3)
+					minetest.sound_play("default_dig_crumbly", {pos = pos, gain = 0.5, max_hear_distance = 10})
+				 end
+			end
+		end
+	end})
+

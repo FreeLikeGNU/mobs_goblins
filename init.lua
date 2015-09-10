@@ -68,8 +68,9 @@ if mobs.mod and mobs.mod == "redo" then
 
 				local np_list = minetest.find_nodes_in_area(p1, p2, diggable_nodes)
 
-				-- Leave the outer cube less finished. They're goblins.
-				if r >= self.room_radius and (#np_list == 0 or math.random() < 0.1) then
+				-- I wanted to leave the outer layer incomplete, but this
+				--  actually tends to make it look worse.
+				if r >= self.room_radius and #np_list == 0 then
 					self.room_radius = math.random(1,2) + math.random(0,1)
 					self.state = "stand"
 					break
@@ -122,6 +123,32 @@ if mobs.mod and mobs.mod == "redo" then
 	dofile(path.."/goblin_iron.lua")
 	dofile(path.."/goblin_king.lua")
 	dofile(path.."/goblin_traps.lua")
+
+	minetest.register_node("mobs_goblins:mossycobble_trap", {
+		description = "Messy Gobblestone",
+		tiles = {"default_mossycobble.png"},
+		is_ground_content = false,
+		groups = {cracky = 2, stone = 1},
+		sounds = default.node_sound_stone_defaults(),
+		paramtype = "light",
+		light_source =  4,
+	})
+
+	--[[ too bad we can't keep track of what physics are set too by other mods...]]
+	minetest.register_abm({
+		nodenames = {"mobs_goblins:mossycobble_trap"},
+		interval = 1,
+		chance = 1,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 0.95)) do -- IDKWTF this is but it works
+					if object:is_player() then
+						object:set_physics_override({speed = 0.1})
+						minetest.after(1, function() -- this effect is temporary
+							object:set_physics_override({speed = 1})  -- we'll just set it to 1 and be done.
+						end)
+					end
+			end
+		end})
 
 	minetest.log("action", "GOBLINS is lowdids!")
 end

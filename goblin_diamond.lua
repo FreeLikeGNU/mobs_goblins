@@ -116,3 +116,47 @@ mobs:register_mob("mobs_goblins:goblin_diamond", {
 mobs:register_egg("mobs_goblins:goblin_diamond", "Goblin Egg (diamond)", "default_mossycobble.png", 1)
 mobs:register_spawn("mobs_goblins:goblin_diamond", {"default:stone_with_diamond" }, 100, 0, 1, 2, 0)
 
+minetest.register_node("mobs_goblins:stone_with_diamond_trap", {
+	description = "Diamond Trap",
+	tiles = {"default_cobble.png^default_mineral_diamond.png"},
+	groups = {cracky = 3},
+	drop = 'default:diamond',
+	is_ground_content = false,
+	sounds = default.node_sound_stone_defaults(),
+})
+
+local singleplayer = minetest.is_singleplayer()
+local setting = minetest.setting_getbool("enable_tnt")
+if (not singleplayer and setting ~= true) or (singleplayer and setting == false) then
+	-- wimpier trap for non-tnt settings
+	minetest.register_abm({
+		nodenames = {"mobs_goblins:stone_with_diamond_trap"},
+		interval = 1,
+		chance = 1,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 3)) do
+				if object:is_player() then
+					minetest.set_node(pos, {name="default:lava_source"})
+					if object:get_hp() > 0 then
+						object:set_hp(object:get_hp()-2)
+						minetest.sound_play("default_dig_crumbly", {pos = pos, gain = 0.5, max_hear_distance = 10})
+					end
+				end
+			end
+		end})
+else
+	-- 5... 4... 3... 2... 1...
+	minetest.register_abm({
+		nodenames = {"mobs_goblins:stone_with_diamond_trap"},
+		interval = 1,
+		chance = 1,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 3)) do
+				if object:is_player() then
+					minetest.set_node(pos, {name="tnt:tnt_burning"})
+					minetest.get_node_timer(pos):start(5)
+					minetest.sound_play("default_dig_crumbly", {pos = pos, gain = 0.5, max_hear_distance = 10})
+				end
+			end
+		end})
+end

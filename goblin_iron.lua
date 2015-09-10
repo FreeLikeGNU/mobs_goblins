@@ -115,3 +115,29 @@ mobs:register_mob("mobs_goblins:goblin_iron", {
 mobs:register_egg("mobs_goblins:goblin_iron", "Goblin Egg (iron)", "default_mossycobble.png", 1)
 mobs:register_spawn("mobs_goblins:goblin_iron", {"default:stone_with_iron"}, 100, 0, 1, 3, 0)
 
+minetest.register_node("mobs_goblins:stone_with_iron_trap", {
+	description = "Iron Trap",
+	tiles = {"default_cobble.png^default_mineral_iron.png"},
+	groups = {cracky = 3},
+	drop = 'default:iron_lump',
+	is_ground_content = false,
+	sounds = default.node_sound_stone_defaults(),
+})
+
+-- summon a metallic goblin?
+-- pit of iron razors?
+minetest.register_abm({
+	nodenames = {"mobs_goblins:stone_with_iron_trap"},
+	interval = 2,
+	chance = 2,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 2)) do
+			if object:is_player() then
+				if object:get_hp() > 0 then
+					object:set_hp(object:get_hp()-1)
+					minetest.sound_play("default_dig_crumbly", {pos = pos, gain = 0.5, max_hear_distance = 10})
+				 end
+			end
+		end
+	end})
+
