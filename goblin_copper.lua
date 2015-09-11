@@ -107,14 +107,14 @@ mobs:register_mob("mobs_goblins:goblin_copper", {
 	end,
 
 	do_custom = function(self)
-		mobs.search_replace(self.object:getpos(), 10, 1, {"group:stone", "default:stone_with_copper"}, "default:mossycobble")
-		mobs.search_replace(self.object:getpos(), 2, 1, {"default:torch", "group:plant"}, "air")
-		mobs.search_replace(self.object:getpos(), 50, 5, {"default:stone_with_copper", "group:stone"}, "mobs_goblins:stone_with_copper_trap")
+		mobs_goblins.search_replace(self.object:getpos(), 5, 1, {"default:torch"}, "air")
+		mobs_goblins.search_replace(self.object:getpos(), 20, 1, {"group:stone"}, "default:mossycobble")
+		mobs_goblins.search_replace(self.object:getpos(), 50, 5, {"default:stone_with_copper", "group:stone"}, "mobs_goblins:stone_with_copper_trap")
 	end,
 })
 mobs:register_egg("mobs_goblins:goblin_copper", "Goblin Egg (copper)", "default_mossycobble.png", 1)
-mobs:register_spawn("mobs_goblins:goblin_copper", {"default:stone_with_copper"}, 100, 0, 1, 3, 0)
-mobs:register_spawn("mobs_goblins:goblin_copper", {"default:mossycobble"}, 100, 0, 30, 3, 0)
+mobs:register_spawn("mobs_goblins:goblin_copper", {"default:stone_with_copper"}, 100, 0, 1 * mobs_goblins.spawn_frequency, 3, 0)
+mobs:register_spawn("mobs_goblins:goblin_copper", {"default:mossycobble"}, 100, 0, 1 * mobs_goblins.spawn_frequency, 3, 0)
 
 minetest.register_node("mobs_goblins:stone_with_copper_trap", {
 	description = "Copper Trap",

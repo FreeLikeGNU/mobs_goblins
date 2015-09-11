@@ -82,7 +82,7 @@ mobs.goblin_tunneling = function(self, type)
 		end
 	end
 
-	if self.state == "stand" and math.random() < 0.2 then
+	if self.state == "stand" and math.random() < 0.05 then
 		self.state = "tunnel"
 	elseif self.state == "tunnel" and math.random() < 0.05 then
 		self.state = "room"
@@ -200,13 +200,13 @@ mobs:register_mob("mobs_goblins:goblin_digger", {
 	do_custom = function(self)
 		mobs.goblin_tunneling(self, "digger")
 
-		mobs.search_replace(self.object:getpos(), 5, 1, {"group:stone"}, "default:mossycobble")
-		mobs.search_replace(self.object:getpos(), 2, 1, {"default:torch", "group:plant"}, "air")
-		mobs.search_replace(self.object:getpos(), 50, 1, {"group:stone", "default:torch"}, "mobs_goblins:mossycobble_trap")
+		mobs_goblins.search_replace(self.object:getpos(), 5, {"default:torch"}, "air")
+		mobs_goblins.search_replace(self.object:getpos(), 10, {"group:stone"}, "default:mossycobble")
+		mobs_goblins.search_replace(self.object:getpos(), 50, {"group:stone"}, "mobs_goblins:mossycobble_trap")
 	end,
 })
 
 mobs:register_egg("mobs_goblins:goblin_digger", "Goblin Egg (digger)", "default_mossycobble.png", 1)
-mobs:register_spawn("mobs_goblins:goblin_digger", {"group:stone"}, 100, 0, 20, 3, 0)
-mobs:register_spawn("mobs_goblins:goblin_digger", {"default:mossycobble"}, 100, 0, 20, 3, 0)
+mobs:register_spawn("mobs_goblins:goblin_digger", {"group:stone"}, 100, 0, 20 * mobs_goblins.spawn_frequency, 3, 0)
+mobs:register_spawn("mobs_goblins:goblin_digger", {"default:mossycobble"}, 100, 0, 1 * mobs_goblins.spawn_frequency, 3, 0)
 

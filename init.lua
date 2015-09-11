@@ -1,9 +1,12 @@
 local path = minetest.get_modpath("mobs_goblins")
 
+mobs_goblins = {}
+mobs_goblins.spawn_frequency = 10
+
 if mobs.mod and mobs.mod == "redo" then
 	mobs.debugging_goblins = false
 
-	mobs.search_replace = function(pos, search_rate, replace_rate, replace_what, replace_with)
+	mobs_goblins.search_replace = function(pos, search_rate, replace_what, replace_with)
 		-- replace_rate is unnecessary, just replace one at a time.
 		-- I only get to do one thing per step, so do they.
 		if math.random(1, search_rate) == 1 then

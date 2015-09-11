@@ -106,12 +106,16 @@ mobs:register_mob("mobs_goblins:goblin_king", {
 	end,
 
 	do_custom = function(self)
-		mobs.search_replace(self.object:getpos(), 10, 1, {"group:stone", "default:stone_with_iron", "default:stone_with_gold", "default:stone_with_diamond"}, "default:mossycobble")
-		mobs.search_replace(self.object:getpos(), 2, 1, {"default:torch", "group:plant"}, "air")
-		mobs.search_replace(self.object:getpos(), 25, 5, {"default:torch", "group:stone","default:stone_with_iron","default:stone_with_gold","default:stone_with_diamond"}, "mobs_goblins:mossycobble_trap")
+		mobs_goblins.search_replace(self.object:getpos(), 2, {"default:torch"}, "air")
+		mobs_goblins.search_replace(self.object:getpos(), 20, {"group:stone"}, "default:mossycobble")
+		mobs_goblins.search_replace(self.object:getpos(), 50, {"group:stone"}, "mobs_goblins:mossycobble_trap")
+		mobs_goblins.search_replace(self.object:getpos(), 50, {"default:stone_with_coal", "group:stone"}, "mobs_goblins:stone_with_coal_trap")
+		mobs_goblins.search_replace(self.object:getpos(), 50, 5, {"default:stone_with_copper", "group:stone"}, "mobs_goblins:stone_with_copper_trap")
+		mobs_goblins.search_replace(self.object:getpos(), 50, 5, {"default:stone_with_gold", "group:stone"}, "mobs_goblins:stone_with_gold_trap")
+		mobs_goblins.search_replace(self.object:getpos(), 50, 5, {"default:stone_with_iron", "group:stone"}, "mobs_goblins:stone_with_iron_trap")
 	end,
 })
 mobs:register_egg("mobs_goblins:goblin_king", "Goblin King Egg", "default_mossycobble.png", 1)
-mobs:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese"}, 100, 0, 2, 1, 0)
-mobs:register_spawn("mobs_goblins:goblin_king", {"default:mossycobble"}, 100, 0, 50, 3, 0)
+mobs:register_spawn("mobs_goblins:goblin_king", {"default:stone_with_mese"}, 100, 0, 1 * mobs_goblins.spawn_frequency, 1, 0)
+mobs:register_spawn("mobs_goblins:goblin_king", {"default:mossycobble"}, 100, 0, 3 * mobs_goblins.spawn_frequency, 3, 0)
 
