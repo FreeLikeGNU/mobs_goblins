@@ -78,7 +78,14 @@ function mobs_goblins:register_mob(name, def)
 		replace_what = def.replace_what,
 		replace_with = def.replace_with,
 		-- or maybe something different?
-		replace_rate_secondary = def.replace_rate_secondary or 0,
+		--
+		-- Zero is a BAD default, as random will not take a 1,0 range.
+		--  The mod fails with an error in the current master.
+		--  I recommend replacing with an unreasonably large number, or
+		--  nil (and changing the random call to check for nil).
+		-- replace_rate_secondary = def.replace_rate_secondary or 0,
+		replace_rate_secondary = def.replace_rate_secondary or 1000000,
+		--
 		replace_with_secondary = def.replace_with_secondary or def.replace_with,
 		timer = 0,
 		env_damage_timer = 0, -- only if state = "attack"
