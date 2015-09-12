@@ -246,10 +246,10 @@ function mobs_goblins:register_mob(name, def)
 				pos2.x = pos2.x + self.search_offset
 				pos2.z = pos2.z + self.search_offset
 				if self.debugging_goblins == true then
-					print (self.name)
-			        	print ("at                  " .. self.object:getpos().x, self.object:getpos().y, self.object:getpos().z)
-					print ("is searching between" .. pos1.x, pos1.y, pos1.z)
-					print ("and                 " .. pos2.x, pos2.y, pos2.z)
+					--print (self.name)
+			        	--print ("at                  " .. self.object:getpos().x, self.object:getpos().y, self.object:getpos().z)
+					--print ("is searching between" .. pos1.x, pos1.y, pos1.z)
+					--print ("and                 " .. pos2.x, pos2.y, pos2.z)
 				end
 				local nodelist = minetest.find_nodes_in_area(pos1, pos2, self.replace_what)
 				if self.replace_what
@@ -266,7 +266,7 @@ function mobs_goblins:register_mob(name, def)
 									minetest.set_node(value, {name = self.replace_with})
 								end
 								if self.debugging_goblins == true then
-									print(self.replace_with.." placed")
+									print(self.replace_with.." placed by " .. self.name .. " at " .. self.object:getpos().x, self.object:getpos().y, self.object:getpos().z)
 								end
 								minetest.sound_play(self.sounds.replace, {
 								object = self.object,

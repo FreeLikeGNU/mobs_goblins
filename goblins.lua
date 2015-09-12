@@ -1,4 +1,4 @@
- 
+
 -- Npc by TenPlus1 converted for FLG Goblins :D
 
 mobs_goblins.goblin_tunneling = function(self, type)
@@ -41,7 +41,7 @@ mobs_goblins.goblin_tunneling = function(self, type)
 			end
 		end
 
-		if math.random() < 0.2 then
+		if math.random() < 0.5 then
 			local d = {-1,1}
 			self.digging_dir = (self.digging_dir + d[math.random(2)]) % 4
 		end
@@ -82,11 +82,11 @@ mobs_goblins.goblin_tunneling = function(self, type)
 		end
 	end
 
-	if self.state == "stand" and math.random() < 0.05 then
+	if self.state == "stand" and math.random() < 0.1 then
 		self.state = "tunnel"
 	elseif self.state == "tunnel" and math.random() < 0.05 then
 		self.state = "room"
-	elseif self.state == "tunnel" and math.random() < 0.1 then
+	elseif self.state == "tunnel" and math.random() < 0.05 then
 		self.state = "stand"
 	end
 end
@@ -141,16 +141,16 @@ mobs_goblins:register_mob("mobs_goblins:goblin_cobble", {
 	lifetimer = 360,
 	follow = {"default:diamond"},
 -- updated node searching!
-	search_rate = 20,
+	search_rate = 30,
 	search_rate_above = 1,
 	search_rate_below = 1,
 	search_offset = 1,
 	search_offset_below = 1,
 	search_offset_above = 2,
-	replace_rate = 5,
+	replace_rate = 10,
 	replace_what = {"default:stone","default:desert_stone","default:torch"},
 	replace_with = "default:mossycobble",
-	replace_rate_secondary = 3,
+	replace_rate_secondary = 10,
 	replace_with_secondary = "mobs_goblins:mossycobble_trap",
 
 	view_range = 15,
@@ -396,7 +396,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
 	search_offset_below = 1,
 	search_offset_above = 2,
 	replace_rate = 5,
-	replace_what = {"default:torch","default:stone_with_coal","default:stone", "default:desert_stone"},
+	replace_what = {"default:torch","default:stone_with_coal"},
 	replace_with = "air",
 	replace_rate_secondary = 3,  --or maybe just set a nasty trap
 	replace_with_secondary = "mobs_goblins:stone_with_coal_trap", 
@@ -516,7 +516,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
 	search_offset_below = 1,
 	search_offset_above = 2,
 	replace_rate = 5,
-	replace_what = {"default:torch","default:stone_with_iron", "default:stone", "default:desert_stone"},
+	replace_what = {"default:torch","default:stone_with_iron", },
 	replace_with = "air",  --steal outright
 	replace_rate_secondary = 3,  --or maybe just set a nasty trap
 	replace_with_secondary = "mobs_goblins:stone_with_iron_trap", 
@@ -637,7 +637,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_copper", {
 	search_offset_below = 1,
 	search_offset_above = 2,
 	replace_rate = 5,
-	replace_what = {"default:torch","default:stone_with_copper", "default:stone", "default:desert_stone"},
+	replace_what = {"default:torch","default:stone_with_copper", },
 	replace_with = "air",  --steal outright
 	replace_rate_secondary = 3,  --or maybe just set a nasty trap
 	replace_with_secondary = "mobs_goblins:stone_with_copper_trap", 
@@ -758,7 +758,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 	search_offset_below = 1,
 	search_offset_above = 2,
 	replace_rate = 5,
-	replace_what = {"default:torch","default:stone_with_gold", "default:stone", "default:desert_stone"},
+	replace_what = {"default:torch","default:stone_with_gold", },
 	replace_with = "air",
 	replace_rate_secondary = 4,  --or maybe just set a nasty trap
 	replace_with_secondary = "mobs_goblins:stone_with_gold_trap", 
@@ -878,7 +878,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 	walk_velocity = 1.5,
 	run_velocity = 2,
 	replace_rate = 5,
-	replace_what = {"default:torch","default:stone_with_diamond", "default:stone", "default:desert_stone"},
+	replace_what = {"default:torch","default:stone_with_diamond", },
 	replace_with = "air",
 	replace_rate_secondary = 3,  --or maybe just set a nasty trap
 	replace_with_secondary = "mobs_goblins:stone_with_diamond_trap", 

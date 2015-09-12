@@ -9,7 +9,7 @@ minetest.register_node("mobs_goblins:mossycobble_trap", {
 	groups = {cracky = 2, stone = 1},
 	sounds = default.node_sound_stone_defaults(),
 	paramtype = "light",
-	light_source = 3,
+	light_source = 4,
 })
 
 minetest.register_node("mobs_goblins:stone_with_coal_trap", {

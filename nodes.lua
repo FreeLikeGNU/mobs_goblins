@@ -5,5 +5,5 @@ minetest.register_node(":default:mossycobble", {
 	groups = {cracky = 3, stone = 1},
 	sounds = default.node_sound_stone_defaults(),
 	paramtype = "light",
-	light_source = 3,
+	light_source = 4,
 })
