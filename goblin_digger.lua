@@ -46,15 +46,15 @@ mobs.goblin_tunneling = function(self, type)
 			self.digging_dir = (self.digging_dir + d[math.random(2)]) % 4
 		end
 
-		self:set_animation("walk")
-		self.set_velocity(self, self.walk_velocity)
+		set_animation(self, "walk")
+		set_velocity(self, self.walk_velocity)
 	elseif self.state == "room" then  -- Dig a room.
 		if not self.room_radius then
 			self.room_radius = 1
 		end
 
-		self:set_animation("stand")
-		self.set_velocity(self, 0)
+		set_animation(self, "stand")
+		set_velocity(self, 0)
 
 		-- Work from the inside, out.
 		for r = 1,self.room_radius do

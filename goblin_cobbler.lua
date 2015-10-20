@@ -144,3 +144,9 @@ minetest.register_abm({
 		end
 	end})
 
+minetest.register_craft({
+	type = "cooking",
+	output = "default:stone",
+	recipe = "mobs_goblins:mossycobble_trap",
+})
+
