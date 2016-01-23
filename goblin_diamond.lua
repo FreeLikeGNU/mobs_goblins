@@ -33,8 +33,8 @@ mobs:register_mob("mobs_goblins:goblin_diamond", {
 	drops = {
 		{name = "default:pick_diamond",
 		chance = 1, min = 1, max = 1},
-		{name = "default:apple",
-		chance = 2, min = 1, max = 10},
+		{name = "valleys_c:mushroom_steak",
+		chance = 2, min = 2, max = 6},
 		{name = "default:diamond",
 		chance = 5, min = 1, max = 1},
 	},

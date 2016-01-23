@@ -1,18 +1,19 @@
 -- goblins_digger.lua
 --
 
+-- He destroys everything diggable in his path. It's too much trouble
+--  to fudge around with particulars. Besides, I don't want them to
+--  mine for me.
+local diggable_nodes = {"group:stone", "group:sand", "group:soil", "group:plant"}
+-- This translates yaw into vectors.
+local cardinals = {{x=0,y=0,z=0.75}, {x=-0.75,y=0,z=0}, {x=0,y=0,z=-0.75}, {x=0.75,y=0,z=0}}
+
 mobs.goblin_tunneling = function(self, type)
 	-- Types are available for fine-tuning.
 	if type == nil then
 		type = "digger"
 	end
 
-	-- He destroys everything diggable in his path. It's too much trouble
-	--  to fudge around with particulars. Besides, I don't want them to
-	--  mine for me.
-	local diggable_nodes = {"group:stone", "group:sand", "group:soil", "group:cracky", "group:crumbly", "group:choppy", "group:plant"}
-	-- This translates yaw into vectors.
-	local cardinals = {{x=0,y=0,z=0.75}, {x=-0.75,y=0,z=0}, {x=0,y=0,z=-0.75}, {x=0.75,y=0,z=0}}
 	local pos = self.object:getpos()
 
 	if self.state == "tunnel" then
@@ -123,7 +124,7 @@ mobs:register_mob("mobs_goblins:goblin_digger", {
 	drops = {
 		{name = "default:mossycobble",
 		chance = 1, min = 1, max = 3},
-		{name = "default:apple",
+		{name = "valleys_c:mushroom_steak",
 		chance = 2, min = 1, max = 2},
 		{name = "default:torch",
 		chance = 3, min = 1, max = 10},

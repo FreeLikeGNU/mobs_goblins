@@ -34,8 +34,10 @@ mobs:register_mob("mobs_goblins:goblin_cobble", {
 	drops = {
 		{name = "default:pick_stone",
 		chance = 1, min = 1, max = 3},
-		{name = "default:apple",
+		{name = "valleys_c:mushroom_steak",
 		chance = 2, min = 1, max = 2},
+		{name = "valleys_c:glowing_fungus",
+		chance = 1, min = 2, max = 5},
 		{name = "default:torch",
 		chance = 3, min = 1, max = 10},
 	},

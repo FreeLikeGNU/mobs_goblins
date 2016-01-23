@@ -32,8 +32,8 @@ mobs:register_mob("mobs_goblins:goblin_king", {
 	drops = {
 		{name = "default:pick_mese",
 		chance = 1, min = 1, max = 1},
-		{name = "default:apple",
-		chance = 2, min = 1, max = 10},
+		{name = "valleys_c:mushroom_steak",
+		chance = 2, min = 3, max = 8},
 		{name = "default:mese_crystal",
 		chance = 5, min = 1, max = 1},
 	},
