@@ -34,7 +34,7 @@ mobs:register_mob("mobs_goblins:goblin_copper", {
 		{name = "default:copper_lump",
 		chance = 1, min = 1, max = 3},
 		{name = "valleys_c:mushroom_steak",
-		chance = 2, min = 1, max = 4},
+		chance = 2, min = 1, max = 2},
 		{name = "default:pick_steel",
 		chance = 5, min = 1, max = 1},
 	},
