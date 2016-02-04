@@ -26,6 +26,7 @@ if mobs.mod and mobs.mod == "redo" then
 	end
 
 	mobs.goblin_drops = { "default:pick_steel",  "default:sword_steel", "default:shovel_steel", "farming:bread", "bucket:bucket_water", "default:pick_stone", "default:sword_stone" }
+	--{"group:stone"} = { "default:stone", "default:mossycobble", "default:sandstone", "default:desert_stone", "default:stone_with_coal", "default:stone_with_iron", "default:stone_with_copper", "default:stone_with_gold", "default:stone_with_diamond" }
 
 	dofile(path.."/goblin_cobbler.lua")
 	dofile(path.."/goblin_copper.lua")

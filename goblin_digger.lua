@@ -5,6 +5,7 @@
 --  to fudge around with particulars. Besides, I don't want them to
 --  mine for me.
 local diggable_nodes = {"group:stone", "group:sand", "group:soil", "group:plant"}
+
 -- This translates yaw into vectors.
 local cardinals = {{x=0,y=0,z=0.75}, {x=-0.75,y=0,z=0}, {x=0,y=0,z=-0.75}, {x=0.75,y=0,z=0}}
 
@@ -38,7 +39,9 @@ mobs.goblin_tunneling = function(self, type)
 		if #np_list > 0 then
 			-- Dig it.
 			for _, np in pairs(np_list) do
-				minetest.remove_node(np)
+				if np.name ~= "default:cobble" then
+					minetest.remove_node(np)
+				end
 			end
 		end
 
