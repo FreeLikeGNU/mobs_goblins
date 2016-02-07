@@ -1,7 +1,7 @@
 local path = minetest.get_modpath("mobs_goblins")
 
 mobs_goblins = {}
-mobs_goblins.spawn_frequency = 10
+mobs_goblins.spawn_frequency = 40
 
 if mobs.mod and mobs.mod == "redo" then
 	mobs.debugging_goblins = false
