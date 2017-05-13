@@ -3,11 +3,11 @@ mobs_goblins = {}
 mobs_goblins.mod = "redo"
 
 -- Initial settings check
-local damage_enabled = minetest.setting_getbool("enable_damage") or true
-local peaceful_only = minetest.setting_getbool("only_peaceful_mobs") or false
-local enable_blood = minetest.setting_getbool("mobs_enable_blood") or true
-mobs_goblins.protected = tonumber(minetest.setting_get("mobs_spawn_protected")) or 0
-mobs_goblins.remove = minetest.setting_getbool("remove_far_mobs") or false
+local damage_enabled = minetest.settings:get_bool("enable_damage") or true
+local peaceful_only = minetest.settings:get_bool("only_peaceful_mobs") or false
+local enable_blood = minetest.settings:get_bool("mobs_enable_blood") or true
+mobs_goblins.protected = tonumber(minetest.settings:get("mobs_spawn_protected")) or 0
+mobs_goblins.remove = minetest.settings:get_bool("remove_far_mobs") or false
 
 function mobs_goblins:register_mob(name, def)
 	minetest.register_entity(name, {
@@ -1320,7 +1320,7 @@ function mobs_goblins:spawn_specific(name, nodes, neighbors, min_light, max_ligh
 				return
 			end
 
-			if minetest.setting_getbool("display_mob_spawn") then
+			if minetest.settings:get_bool("display_mob_spawn") then
 				minetest.chat_send_all("[mobs_goblins] Spawned "..name.." at "..minetest.pos_to_string(pos))
 			end
 
@@ -1696,7 +1696,7 @@ function mobs_goblins:feed_tame(self, clicker, feed_count, breed)
 	if follow_holding(self, clicker) then
 --print ("mmm, tasty")
 		-- take item
-		if not minetest.setting_getbool("creative_mode") then
+		if not minetest.settings:get_bool("creative_mode") then
 			item:take_item()
 			clicker:set_wielded_item(item)
 		end

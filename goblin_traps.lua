@@ -312,7 +312,7 @@ minetest.register_abm({
 		end
 	end})
 
-local setting = minetest.setting_getbool("enable_tnt")
+local setting = minetest.settings:get_bool("enable_tnt")
 if setting == true then
 	print("enable_tnt = true")
 else
