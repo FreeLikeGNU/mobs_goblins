@@ -375,7 +375,7 @@ function mobs_goblins:register_mob(name, def)
 				pos.y = pos.y + 1
 
 				-- water
-				if self.water_damage ~= 0
+				if self.water_damage ~= 0 and nodef ~= nil
 				and nodef.groups.water then
 					self.object:set_hp(self.object:get_hp() - self.water_damage)
 					effect(pos, 5, "bubble.png")
@@ -383,7 +383,7 @@ function mobs_goblins:register_mob(name, def)
 				end
 
 				-- lava or fire
-				if self.lava_damage ~= 0
+				if self.lava_damage ~= 0 and nodef ~= nil
 				and (nodef.groups.lava or nod.name == "fire:basic_flame") then
 					self.object:set_hp(self.object:get_hp() - self.lava_damage)
 					effect(pos, 5, "fire_basic_flame.png")
