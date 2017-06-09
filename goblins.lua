@@ -186,14 +186,14 @@ mobs_goblins:register_mob("mobs_goblins:goblin_cobble", {
 			if hp > self.hp_max then hp = self.hp_max end
 			self.object:set_hp(hp)
 			-- take item
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
 
 		-- right clicking with gold lump drops random item from mobs_goblins.goblin_drops
 		elseif item:get_name() == "default:gold_lump" then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
@@ -305,14 +305,14 @@ mobs_goblins:register_mob("mobs_goblins:goblin_digger", {
 			if hp > self.hp_max then hp = self.hp_max end
 			self.object:set_hp(hp)
 			-- take item
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
 
 		-- right clicking with gold lump drops random item from mobs_goblins.goblin_drops
 		elseif item:get_name() == "default:gold_lump" then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
@@ -433,14 +433,14 @@ mobs_goblins:register_mob("mobs_goblins:goblin_coal", {
 			if hp > self.hp_max then hp = self.hp_max end
 			self.object:set_hp(hp)
 			-- take item
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
 
 		-- right clicking with gold lump drops random item from mobs_goblins.goblin_drops
 		elseif item:get_name() == "default:gold_lump" then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
@@ -554,14 +554,14 @@ mobs_goblins:register_mob("mobs_goblins:goblin_iron", {
 			if hp > self.hp_max then hp = self.hp_max end
 			self.object:set_hp(hp)
 			-- take item
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
 
 		-- right clicking with gold lump drops random item from mobs_goblins.goblin_drops
 		elseif item:get_name() == "default:gold_lump" then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
@@ -675,14 +675,14 @@ mobs_goblins:register_mob("mobs_goblins:goblin_copper", {
 			if hp > self.hp_max then hp = self.hp_max end
 			self.object:set_hp(hp)
 			-- take item
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
 
 		-- right clicking with gold lump drops random item from mobs_goblins.goblin_drops
 		elseif item:get_name() == "default:gold_lump" then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
@@ -795,14 +795,14 @@ mobs_goblins:register_mob("mobs_goblins:goblin_gold", {
 			if hp > self.hp_max then hp = self.hp_max end
 			self.object:set_hp(hp)
 			-- take item
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
 
 		-- right clicking with gold lump drops random item from mobs_goblins.goblin_drops
 		elseif item:get_name() == "default:gold_lump" then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
@@ -915,14 +915,14 @@ mobs_goblins:register_mob("mobs_goblins:goblin_diamond", {
 			if hp > self.hp_max then hp = self.hp_max end
 			self.object:set_hp(hp)
 			-- take item
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
 
 		-- right clicking with gold lump drops random item from mobs_goblins.goblin_drops
 		elseif item:get_name() == "default:gold_lump" then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
@@ -1033,14 +1033,14 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 			if hp > self.hp_max then hp = self.hp_max end
 			self.object:set_hp(hp)
 			-- take item
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
 
 		-- right clicking with gold lump drops random item from mobs_goblins.goblin_drops
 		elseif item:get_name() == "default:gold_lump" then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
