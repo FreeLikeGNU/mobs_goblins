@@ -297,7 +297,7 @@ function mobs_goblins:register_mob(name, def)
 						z = 0
 					})
 				end
-				if nodef.groups.water then
+				if nodef and nodef.groups.water then
 					if self.floats == 1 then
 						self.object:setacceleration({
 							x = 0,
