@@ -998,7 +998,7 @@ mobs_goblins:register_mob("mobs_goblins:goblin_king", {
 	search_offset_above = 2,
 	replace_rate = 5,
 	replace_what = {"default:torch", "group:stone"},
-	replace_with = "default:mossycobble_trap",
+	replace_with = "mobs_goblins:mossycobble_trap",
 
 	view_range = 15,
 	owner = "",
