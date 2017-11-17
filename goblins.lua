@@ -1090,13 +1090,13 @@ active_object_count,
 min_height, 
 max_height)
 ]]
-mobs_goblins:spawn_specific("mobs_goblins:goblin_cobble", {"group:stone"}, "air", 0, 50, 1, 10, 3, -30000 , 0)
-mobs_goblins:spawn_specific("mobs_goblins:goblin_digger", {"group:stone"},  "air", 0, 50, 1, 10, 3, -30000 , 0)
-mobs_goblins:spawn_specific("mobs_goblins:goblin_coal", {"default:stone_with_coal", "default:mossycobble"}, "air",0, 50, 1, 2, 3, -30000, 0)
-mobs_goblins:spawn_specific("mobs_goblins:goblin_iron", {"default:stone_with_iron", "default:mossycobble"}, "air", 0, 50, 1, 2, 3, -30000, -20)
-mobs_goblins:spawn_specific("mobs_goblins:goblin_copper", {"default:stone_with_copper", "default:mossycobble"}, "air", 0, 50, 1, 2, 3, -30000, -20)
-mobs_goblins:spawn_specific("mobs_goblins:goblin_gold", {"default:stone_with_gold", "default:mossycobble"}, "air",0, 50, 1, 2, 3, -30000, -40)
-mobs_goblins:spawn_specific("mobs_goblins:goblin_diamond", {"default:stone_with_diamond", "default:mossycobble" }, "air", 0, 50, 1,2, 3, -30000, -80)
-mobs_goblins:spawn_specific("mobs_goblins:goblin_king", {"default:mossycobble",},"air", 0, 50, 1, 10, 3, -30000, -100)
+mobs_goblins:spawn_specific("mobs_goblins:goblin_cobble", {"group:stone"}, "air", 2, 6, 25, 10, 3, -30000 , -30)
+mobs_goblins:spawn_specific("mobs_goblins:goblin_digger", {"group:stone"},  "air", 2, 6, 25, 10, 3, -30000 , -30)
+mobs_goblins:spawn_specific("mobs_goblins:goblin_coal", {"default:stone_with_coal", "default:mossycobble"}, "air", 2, 6, 30, 2, 3, -30000, -30)
+mobs_goblins:spawn_specific("mobs_goblins:goblin_iron", {"default:stone_with_iron", "default:mossycobble"}, "air", 2, 6, 35, 2, 3, -30000, -50)
+mobs_goblins:spawn_specific("mobs_goblins:goblin_copper", {"default:stone_with_copper", "default:mossycobble"}, "air", 2, 6, 40, 2, 3, -30000, -50)
+mobs_goblins:spawn_specific("mobs_goblins:goblin_gold", {"default:stone_with_gold", "default:mossycobble"}, "air", 2, 6, 45, 2, 3, -30000, -70)
+mobs_goblins:spawn_specific("mobs_goblins:goblin_diamond", {"default:stone_with_diamond", "default:mossycobble" }, "air", 2, 6, 45, 2, 3, -30000, -110)
+mobs_goblins:spawn_specific("mobs_goblins:goblin_king", {"default:mossycobble",},"air", 2, 6, 50, 10, 3, -30000, -130)
 mobs_goblins:register_egg("mobs_goblins:goblin_cobble", "goblin egg", "default:mossycobble", 1) 
 
